@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from importData import getDatabase, getSpectra, Database
+from importData import getDatabase, getSpectra, Database, specProc
 
 
 class TestSetup(unittest.TestCase):
