@@ -3,7 +3,7 @@ from typing import List, Tuple
 from importData import Database, specProc
 
 
-def correlateSpectra(spectra: np.ndarray, database: Database):
+def correlate_spectra(spectra: np.ndarray, database: Database):
     refSpecs: np.ndarray = database.getSpectra()
 
     # preprocess ref spectra

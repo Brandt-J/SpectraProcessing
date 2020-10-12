@@ -1,6 +1,7 @@
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
+
 curPath: Path = Path(os.path.realpath(__file__))
 projectPath: Path = curPath.parent
 sys.path.append(str(projectPath.parent))
@@ -13,7 +14,7 @@ import csv
 specProc = spectraProcessing
 
 
-def getDatabase() -> Database:
+def get_database() -> Database:
     def read_from_directory(path: str) -> np.ndarray:
         spectra: np.ndarray = None
         names: list = []
@@ -56,9 +57,16 @@ def getDatabase() -> Database:
 
     for index, name in enumerate(specNames):
         newDB.addSpectrum(name, spectra[:, [0, index + 1]])
+        if name == 'PET' and __name__ == '__main__':
+            import matplotlib.pyplot as plt
+            plt.plot(spectra[:, 0], spectra[:, index+1])
+            plt.show()
 
     return newDB
 
 
-def getSpectra() -> np.ndarray:
+def get_spectra() -> np.ndarray:
     return np.loadtxt(os.path.join(projectPath, 'Sample Spectra', 'FTIR PET.txt'))
+
+if __name__ == '__main__':
+    get_database()

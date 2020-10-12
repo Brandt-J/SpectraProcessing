@@ -2,7 +2,7 @@ import numpy as np
 from scipy.signal import gaussian
 
 
-def addDistortions(spectra: np.ndarray, level: float = 0.2, seed: float = 42) -> np.ndarray:
+def add_distortions(spectra: np.ndarray, level: float = 0.2, seed: float = 42) -> np.ndarray:
     """
     Adds random distortions with max height of "level" to the set of spectra.
     :param spectra: (N, M) array, M-1 spectra with N wavenumbers, wavenumbers in first column
@@ -40,7 +40,7 @@ def addDistortions(spectra: np.ndarray, level: float = 0.2, seed: float = 42) ->
     return spectra
 
 
-def addNoise(spectra: np.ndarray, maxLevel: float = 0.1, seed: float = 42) -> np.ndarray:
+def add_noise(spectra: np.ndarray, maxLevel: float = 0.1, seed: float = 42) -> np.ndarray:
     """
     Adds random noise to the spectra..
     :param spectra: (N, M) array, M-1 spectra with N wavenumbers, wavenumbers in first column
