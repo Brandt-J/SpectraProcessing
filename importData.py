@@ -67,11 +67,3 @@ def get_database() -> Database:
 
 def get_spectra() -> np.ndarray:
     return np.loadtxt(os.path.join(projectPath, 'Sample Spectra', 'FTIR PET.txt'))
-
-
-def get_descripor_library(database: 'Database'):
-    pass
-
-
-if __name__ == '__main__':
-    get_database()

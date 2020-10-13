@@ -21,7 +21,7 @@ def getPETDescriptor() -> 'DescriptorSet':
     return desc
 
 
-def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: int = 20,
+def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: int = 10,
                             minDiff: int = 5) -> 'DescriptorSet':
     intensities = spec[:, 1].copy()
     filterSize = round(len(intensities)/100)
