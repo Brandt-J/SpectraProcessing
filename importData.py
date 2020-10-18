@@ -57,10 +57,6 @@ def get_database() -> Database:
 
     for index, name in enumerate(specNames):
         newDB.addSpectrum(name, spectra[:, [0, index + 1]])
-        if name == 'PET' and __name__ == '__main__':
-            import matplotlib.pyplot as plt
-            plt.plot(spectra[:, 0], spectra[:, index+1])
-            plt.show()
 
     return newDB
 

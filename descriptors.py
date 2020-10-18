@@ -2,23 +2,9 @@ import numpy as np
 from typing import List, TYPE_CHECKING
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
 import matplotlib.pyplot as plt
+from importData import specProc
 if TYPE_CHECKING:
     from importData import Database
-
-
-def getPETDescriptor() -> 'DescriptorSet':
-    desc: DescriptorSet = DescriptorSet('PET')
-    desc.add_descriptor(695, 733, 758)
-    desc.add_descriptor(945, 970, 997)
-    desc.add_descriptor(997, 1021, 1034)
-    desc.add_descriptor(1264, 1301, 1328)
-    desc.add_descriptor(1391, 1410, 1425)
-    desc.add_descriptor(1660, 1744, 1800)
-    desc.add_descriptor(1900, 1955, 2035)
-    desc.add_descriptor(2830, 2908, 2930)
-    desc.add_descriptor(2930, 2970, 3040)
-    desc.add_descriptor(3400, 3433, 3480)
-    return desc
 
 
 def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: int = 10,
@@ -89,16 +75,54 @@ def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: 
     return desc
 
 
+def getDescriptorSetForSpecIndexInSpectra(specName: str, specIndex: int, spectra: np.ndarray) -> 'DescriptorSet':
+    descSet: DescriptorSet = DescriptorSet(specName)
+    intensities: np.ndarray = spectra[:, 1:].copy()
+    filterSize = round(len(intensities) / 50)
+    if filterSize % 2 == 0:
+        filterSize += 1
+
+    # first, normalize them all:
+    for i in range(intensities.shape[1]):
+        intensities[:, i] = savgol_filter(intensities[:, i], filterSize, 3)
+        intensities[:, i] -= specProc.als_baseline(intensities[:, i], smoothness_param=1e7)
+        intensities[:, i] /= intensities[:, i].max()
+
+    curIntensity: np.ndarray = intensities[:, specIndex]
+    numSpecs: int = intensities.shape[1]
+    otherIndices: np.ndarray = np.delete(np.arange(numSpecs), specIndex)
+    avgOthers: np.ndarray = np.mean(intensities[:, otherIndices], axis=1)
+    slopeOfOthers: np.ndarray = np.abs(np.gradient(avgOthers))
+    possPeaks: np.ndarray = curIntensity.copy()
+    possPeaks[slopeOfOthers > slopeOfOthers.max() * 0.3] = 0
+
+    plt.clf()
+    plt.plot(avgOthers, alpha=0.5)
+    plt.plot(curIntensity + 0.5, alpha=0.5)
+    plt.plot(slopeOfOthers*10 - 0.2)
+    plt.plot(possPeaks + 1)
+    plt.title(specName)
+    plt.waitforbuttonpress()
+
+    return descSet
+
+
 class DescriptorLibrary(object):
     def __init__(self):
         super(DescriptorLibrary, self).__init__()
         self._descriptorSets: List['DescriptorSet'] = []
 
-    def generate_from_specDatabase(self, database: 'Database') -> None:
+    def generate_from_specDatabase(self, database: 'Database', maxDescPerSet: int = 10) -> None:
         for i in range(database.getNumberOfSpectra()):
-            desc: DescriptorSet = getDescriptorSetForSpec(database.getSpectrumNameOfIndex(i),
-                                                          database.getSpectrumOfIndex(i))
+            name: str = database.getSpectrumNameOfIndex(i)
+            desc: 'DescriptorSet' = getDescriptorSetForSpec(database.getSpectrumNameOfIndex(i),
+                                                            database.getSpectrumOfIndex(i),
+                                                            maxNumDescriptors=maxDescPerSet)
+            # desc: 'DescriptorSet' = getDescriptorSetForSpecIndexInSpectra(name, i, database.getSpectra())
             self._descriptorSets.append(desc)
+
+    def add_descriptorSet(self, descSet: 'DescriptorSet') -> None:
+        self._descriptorSets.append(descSet)
 
     def apply_to_spectra(self, spectra: np.ndarray) -> List[str]:
         results: List[str] = []
@@ -114,6 +138,46 @@ class DescriptorLibrary(object):
             results.append(bestHit)
         return results
 
+    def getTotalNumberOfDescriptors(self) -> np.ndarray:
+        return np.sum([desc.getNumDescriptors() for desc in self._descriptorSets])
+
+    def getCorrelationMatrixToSpectra(self, spectra: np.ndarray) -> np.ndarray:
+        """
+        Produces a feature matrix used for training classifiers.
+        :param spectra: (N, M) shape array of spectra, first column wavenumbers, all others: intensities
+        :return: feature matrix rows: Features, columns: Samples
+        """
+        numTotalDescriptors: int = self.getTotalNumberOfDescriptors()
+        featureMat: np.ndarray = np.zeros((spectra.shape[1]-1, numTotalDescriptors))
+        for i in range(spectra.shape[1]-1):
+            spec: np.ndarray = spectra[:, [0, i+1]]
+            correlations: List[np.ndarray] = []
+            for descSet in self._descriptorSets:
+                curCorrs: np.ndarray = descSet.get_correlations_to_spectrum(spec)
+                correlations.append(curCorrs)
+            featureMat[i, :] = np.concatenate(correlations)
+
+        return featureMat
+
+    def optimize_descriptorSets(self, maxDescriptorsPerSet: int = 5) -> None:
+        """Optimize in the sense that each descriptor Set only has descriptors for peaks that are as far as possible
+        away from the peaks of all other descriptor Sets"""
+
+        for i, descSet in enumerate(self._descriptorSets):
+            if descSet.getNumDescriptors() > maxDescriptorsPerSet:
+                otherDescSets: List['DescriptorSet'] = [dset for j, dset in enumerate(self._descriptorSets) if j != i]
+                curPeaks: np.ndarray = np.array([desc.peak for desc in descSet.getDescriptors()])
+                otherPeaks: np.ndarray = np.array([])
+                for dset in otherDescSets:
+                    otherPeaks = np.append(otherPeaks, np.array([desc.peak for desc in dset.getDescriptors()]))
+
+                distances: np.ndarray = np.array([np.abs(otherPeaks - peak).min() for peak in curPeaks])
+                sortInd: np.ndarray = np.argsort(distances)[::-1]  # we want max distance first
+                indicesToRemove: np.ndarray = np.sort(sortInd[maxDescriptorsPerSet:])[::-1]  # from highest to lowest
+                # print(f'Desc Set {descSet.name}: min Distance before: {distances[sortInd[-1]]} and after: {distances[sortInd[maxDescriptorsPerSet]]}')
+                for ind in indicesToRemove:
+                    descSet.remove_descriptor_of_index(ind)
+
 
 class DescriptorSet(object):
     def __init__(self, name: str, threshold: float = 0.5):
@@ -125,27 +189,38 @@ class DescriptorSet(object):
     def apply_to_spectra(self, spectra: np.ndarray) -> List[bool]:
         equals: List[bool] = []
         for i in range(spectra.shape[1]-1):
-            curCorr: float = self.get_correlation_to_spectrum(spectra[:, [0, i+1]])
+            curCorr: float = self.get_mean_correlation_to_spectrum(spectra[:, [0, i+1]])
             equals.append(curCorr > self._threshold)
         return equals
 
-    def get_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
-        corr: float = 0.0
+    def get_mean_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
+        return np.mean(self.get_correlations_to_spectrum())
+
+    def get_correlations_to_spectrum(self, spectrum: np.ndarray) -> np.ndarray:
+        corrs: List[float] = [np.nan]
         if len(self._descriptors) > 0:
-            corrs: List[float] = []
+            corrs = []
             for desc in self._descriptors:
                 newCorr = desc.get_correlation_to_spectrum(spectrum)
-                if not np.isnan(newCorr):
-                    corrs.append(newCorr)
+                assert not np.isnan(newCorr)
+                corrs.append(newCorr)
+        else:
+            print('No descriptors on descriptor set', self.name)
+        assert len(corrs) == len(self._descriptors)
+        return np.array(corrs)
 
-            if len(corrs) > 0:
-                corr = np.mean(corrs)
-
-        return corr
-    
     def add_descriptor(self, start: float, peak: float, end: float) -> None:
         newDescriptor: 'TriangleDescriptor' = TriangleDescriptor(start, peak, end)
         self._descriptors.append(newDescriptor)
+
+    def remove_descriptor_of_index(self, index: int) -> None:
+        self._descriptors.remove(self._descriptors[index])
+
+    def getNumDescriptors(self) -> int:
+        return len(self._descriptors)
+
+    def getDescriptors(self) -> List['TriangleDescriptor']:
+        return self._descriptors
 
 
 class TriangleDescriptor(object):
