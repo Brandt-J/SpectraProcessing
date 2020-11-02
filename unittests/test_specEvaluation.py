@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from typing import List
-from importData import getDatabase, getSpectra
-from specCorrelation import correlateSpectra, mapSpectrasetsToSameWavenumbers
+from importData import get_database, get_spectra
+from specCorrelation import correlate_spectra, mapSpectrasetsToSameWavenumbers
 
 
 class TestSpecEvaluation(unittest.TestCase):
@@ -25,8 +25,8 @@ class TestSpecEvaluation(unittest.TestCase):
         self.assertTrue(np.array_equal(newSpecs1[:, 0], newSpecs2[:, 0]))
 
     def test_specCorr(self) -> None:
-        specs: np.ndarray = getSpectra()[:, :10]  # we don't need aaaall the spectra...
-        db = getDatabase()
+        specs: np.ndarray = get_spectra()[:, :10]  # we don't need aaaall the spectra...
+        db = get_database()
 
-        results: List[str] = correlateSpectra(specs, db)
+        results: List[str] = correlate_spectra(specs, db)
         self.assertTrue(results == ['PET']*9)
