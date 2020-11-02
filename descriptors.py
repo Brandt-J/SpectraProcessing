@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from importData import specProc
 if TYPE_CHECKING:
     from importData import Database
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
 
 
 def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: int = 10,
@@ -107,6 +109,16 @@ def getDescriptorSetForSpecIndexInSpectra(specName: str, specIndex: int, spectra
     return descSet
 
 
+def descriptorOverlapsWithSpectrum(descriptor: 'TriangleDescriptor', specToTest: np.ndarray) -> bool:
+    """
+    Checks, if the descriptors start, peak and end are within the range of the spectrum to test.
+    :param descriptor: Triangle Descriptor
+    :param specToTest: (N, 2) shape spectrum, wavenumbers in first column
+    :return: True if fully overlaps, else False
+    """
+    return descriptor.start >= specToTest[0, 0] and descriptor.end <= specToTest[-1, 0]
+
+
 class DescriptorLibrary(object):
     def __init__(self):
         super(DescriptorLibrary, self).__init__()
@@ -127,10 +139,12 @@ class DescriptorLibrary(object):
     def apply_to_spectra(self, spectra: np.ndarray) -> List[str]:
         results: List[str] = []
         for i in range(spectra.shape[1]-1):
+            corrs: List[float] = []
             maxCorr: float = 0.0
             bestHit: str = 'None'
             for desc in self._descriptorSets:
-                corr = desc.get_correlation_to_spectrum(spectra[:, [0, i+1]])
+                corr = desc.get_mean_correlation_to_spectrum(spectra[:, [0, i+1]])
+                corrs.append(corr)
                 if corr > maxCorr:
                     bestHit = desc.name
                     maxCorr = corr
@@ -178,31 +192,48 @@ class DescriptorLibrary(object):
                 for ind in indicesToRemove:
                     descSet.remove_descriptor_of_index(ind)
 
+    def getDescriptorPlot(self) -> 'Figure':
+        fig: 'Figure' = plt.figure()
+        ax: 'Axes' = fig.add_subplot()
+
+        colorCycle = plt.rcParams['axes.prop_cycle'].by_key()['color']
+        tickLength: float = 1
+        for i, descSet in enumerate(self._descriptorSets):
+            for j, desc in enumerate(descSet.getDescriptors()):
+                if j == 0:
+                    ax.plot([desc.peak, desc.peak], [(i+1)*tickLength, i*tickLength], color=colorCycle[i], label=descSet.name)
+                else:
+                    ax.plot([desc.peak, desc.peak], [(i+1)*tickLength, i*tickLength], color=colorCycle[i])
+        ax.legend()
+        return fig
+
 
 class DescriptorSet(object):
-    def __init__(self, name: str, threshold: float = 0.5):
+    def __init__(self, name: str, threshold: float = 0.01):
         super(DescriptorSet, self).__init__()
         self.name = name
         self._threshold = threshold
         self._descriptors: List['TriangleDescriptor'] = []
 
-    def apply_to_spectra(self, spectra: np.ndarray) -> List[bool]:
-        equals: List[bool] = []
-        for i in range(spectra.shape[1]-1):
-            curCorr: float = self.get_mean_correlation_to_spectrum(spectra[:, [0, i+1]])
-            equals.append(curCorr > self._threshold)
-        return equals
-
     def get_mean_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
-        return np.mean(self.get_correlations_to_spectrum())
+        return np.mean(self.get_correlations_to_spectrum(spectrum))
 
     def get_correlations_to_spectrum(self, spectrum: np.ndarray) -> np.ndarray:
+        """
+        Calculates correlation vector
+        :param spectrum: (N, 2) shape np array (wavenumbers in first column)
+        :return:
+        """
         corrs: List[float] = [np.nan]
         if len(self._descriptors) > 0:
             corrs = []
             for desc in self._descriptors:
-                newCorr = desc.get_correlation_to_spectrum(spectrum)
-                assert not np.isnan(newCorr)
+                if descriptorOverlapsWithSpectrum(desc, spectrum):
+                    newCorr = desc.get_correlation_to_spectrum(spectrum)
+                else:
+                    newCorr = 0.0
+                    print(f'skipping descriptor {desc.start}, {desc.end} of {self.name}')
+
                 corrs.append(newCorr)
         else:
             print('No descriptors on descriptor set', self.name)
@@ -240,12 +271,12 @@ class TriangleDescriptor(object):
         :param spectrum: (N, 2) shape array, first col = wavenumbers
         :return: correlationCoefficient
         """
-        corr: float = np.nan
+        corr: float = 0
         startInd = np.argmin(np.abs(spectrum[:, 0] - self.start))
         peakInd = np.argmin(np.abs(spectrum[:, 0] - self.peak))
         endInd = np.argmin(np.abs(spectrum[:, 0] - self.end))
 
-        if endInd - peakInd > 3 and peakInd - startInd > 3:
+        if endInd - peakInd > 2 and peakInd - startInd > 2:
 
             if (endInd - startInd)%2 == 0:
                 intensities: np.ndarray = np.append(np.linspace(0, 1, peakInd - startInd, endpoint=False),
@@ -255,10 +286,11 @@ class TriangleDescriptor(object):
                                                     np.linspace(1, 0, endInd - peakInd))
 
             specSection: np.ndarray = spectrum[startInd:endInd, 1].copy()
-            specSection -= np.linspace(specSection[0], specSection[-1], endInd-startInd)
+            specSection -= np.linspace(specSection[0], specSection[-1], endInd-startInd)  # subtract baseline
             if specSection.max() != 0.0:
                 specSection /= specSection.max()
 
-            corr = np.corrcoef(intensities, specSection)[0, 1]
+            corr = np.corrcoef(intensities, specSection)[0, 1] ** 2
 
+        assert not np.isnan(corr)
         return corr

@@ -8,17 +8,17 @@ desc_HDPE: DescriptorSet = DescriptorSet('HDPE')
 desc_HDPE.add_descriptor(700, 720, 740)
 desc_HDPE.add_descriptor(1435, 1470, 1485)
 desc_HDPE.add_descriptor(2825, 2852, 2870)
-desc_HDPE.add_descriptor(2870, 2925, 2965)
+# desc_HDPE.add_descriptor(2870, 2925, 2965)
 handMadeDescLib.add_descriptorSet(desc_HDPE)
 
 
-desc_LDPE: DescriptorSet = DescriptorSet('LDPE')
-desc_LDPE.add_descriptor(700, 720, 740)
-desc_LDPE.add_descriptor(1361, 1377, 1390)  # The characteristic LDPE band!
-desc_LDPE.add_descriptor(1435, 1470, 1485)
-desc_LDPE.add_descriptor(2825, 2852, 2870)
-desc_LDPE.add_descriptor(2870, 2925, 2965)
-handMadeDescLib.add_descriptorSet(desc_LDPE)
+# desc_LDPE: DescriptorSet = DescriptorSet('LDPE')
+# desc_LDPE.add_descriptor(700, 720, 740)
+# desc_LDPE.add_descriptor(1361, 1377, 1390)  # The characteristic LDPE band!
+# desc_LDPE.add_descriptor(1435, 1470, 1485)
+# desc_LDPE.add_descriptor(2825, 2852, 2870)
+# desc_LDPE.add_descriptor(2870, 2925, 2965)
+# handMadeDescLib.add_descriptorSet(desc_LDPE)
 
 
 desc_PA6: DescriptorSet = DescriptorSet('PA6')  # according to Ksouri et al, J Polym Res 2017, 24: 133
@@ -26,7 +26,7 @@ desc_PA6.add_descriptor(1220, 1260, 1300)  # Amide III
 desc_PA6.add_descriptor(1500, 1550, 1600)  # Amide II
 desc_PA6.add_descriptor(1600, 1650, 1700)  # Amide I
 desc_PA6.add_descriptor(2825, 2852, 2870)
-desc_PA6.add_descriptor(2870, 2925, 2965)
+# desc_PA6.add_descriptor(2870, 2925, 2965)
 desc_PA6.add_descriptor(3020, 3080, 3130)  # N-H stretching
 desc_PA6.add_descriptor(3200, 3300, 3400)  # Amide A (hydrogen bonded N-H)
 handMadeDescLib.add_descriptorSet(desc_PA6)
@@ -38,7 +38,7 @@ desc_PC.add_descriptor(1060, 1080, 1095)  # C-C-C deformation
 desc_PC.add_descriptor(1250, 1260, 1275)  # aromatic ether stretch
 desc_PC.add_descriptor(1475, 1505, 1550)  # C-C stretch Ring
 desc_PC.add_descriptor(1690, 1770, 1840)  # C=O stretch
-desc_PC.add_descriptor(2950, 2970, 3020)
+# desc_PC.add_descriptor(2950, 2970, 3020)
 desc_PC.add_descriptor(3020, 3040, 3050)
 handMadeDescLib.add_descriptorSet(desc_PC)
 
@@ -52,7 +52,7 @@ desc_PET.add_descriptor(1000, 1020, 1050)  # in-plane benzene group
 desc_PET.add_descriptor(1320, 1340, 1360)  # CH2 wagging of glycol
 desc_PET.add_descriptor(1716, 1741, 1760)
 desc_PET.add_descriptor(2870, 2910, 2930)
-desc_PET.add_descriptor(2930, 2970, 3030)
+# desc_PET.add_descriptor(2930, 2970, 3030)
 desc_PET.add_descriptor(3035, 3070, 3090)
 handMadeDescLib.add_descriptorSet(desc_PET)
 
@@ -65,3 +65,14 @@ handMadeDescLib.add_descriptorSet(desc_PET)
 
 
 desc_PP: DescriptorSet = DescriptorSet('PP')
+desc_PP.add_descriptor(795, 807, 820)
+desc_PP.add_descriptor(830, 840, 849)
+desc_PP.add_descriptor(962, 973, 980)
+desc_PC.add_descriptor(988, 996, 1005)
+desc_PP.add_descriptor(1134, 1166, 1180)
+desc_PP.add_descriptor(1337, 1375, 1387)
+desc_PP.add_descriptor(1422, 1452, 1480)
+desc_PP.add_descriptor(2860, 2870, 2885)
+# desc_PP.add_descriptor(2890, 2920, 2940)
+desc_PP.add_descriptor(2940, 2950, 2980)
+handMadeDescLib.add_descriptorSet(desc_PP)
