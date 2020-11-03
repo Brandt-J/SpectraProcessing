@@ -232,7 +232,7 @@ class DescriptorSet(object):
                     newCorr = desc.get_correlation_to_spectrum(spectrum)
                 else:
                     newCorr = 0.0
-                    print(f'skipping descriptor {desc.start}, {desc.end} of {self.name}')
+                    # print(f'skipping descriptor {desc.start}, {desc.end} of {self.name}')
 
                 corrs.append(newCorr)
         else:
@@ -287,10 +287,9 @@ class TriangleDescriptor(object):
 
             specSection: np.ndarray = spectrum[startInd:endInd, 1].copy()
             specSection -= np.linspace(specSection[0], specSection[-1], endInd-startInd)  # subtract baseline
-            if specSection.max() != 0.0:
-                specSection /= specSection.max()
 
-            corr = np.corrcoef(intensities, specSection)[0, 1] ** 2
+            if not np.all(specSection == 0):
+                corr = np.corrcoef(intensities, specSection)[0, 1]
+            assert not np.isnan(corr)
 
-        assert not np.isnan(corr)
         return corr

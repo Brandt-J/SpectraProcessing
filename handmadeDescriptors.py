@@ -76,3 +76,12 @@ desc_PP.add_descriptor(2860, 2870, 2885)
 # desc_PP.add_descriptor(2890, 2920, 2940)
 desc_PP.add_descriptor(2940, 2950, 2980)
 handMadeDescLib.add_descriptorSet(desc_PP)
+
+
+desc_PS: DescriptorSet = DescriptorSet('PS')
+desc_PS.add_descriptor(1590, 1600, 1610)
+desc_PS.add_descriptor(2825, 2850, 2870)
+desc_PS.add_descriptor(3010, 3025, 3043)
+desc_PS.add_descriptor(3043, 3061, 3071)
+desc_PS.add_descriptor(3071, 3082, 3096)
+handMadeDescLib.add_descriptorSet(desc_PS)

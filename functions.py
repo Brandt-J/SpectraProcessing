@@ -1,5 +1,3 @@
-import numpy as np
-from collections import Counter
 from typing import List, Tuple, Dict
 
 
@@ -25,16 +23,25 @@ def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[f
         if estimatedList[i] in replaceDict.keys():
             estimatedList[i] = replaceDict[estimatedList[i]]
 
-    totalQuality: float = np.count_nonzero(np.array(estimatedList) == np.array(trueList)) / len(trueList) * 100
+    resultDict: Dict[str, List[int]] = {}  # key: name, value: [numCorrect, numFalse]
+    totalErrors: int = 0
+    for expected, actual in zip(trueList, estimatedList):
+        correct = expected == actual
+        if not correct:
+            totalErrors += 1
 
-    resultDict: Dict[str, float] = {}
-    for name in np.unique(trueList):
-        numCorrect = Counter(trueList).get(name)
-        estCounter = Counter(estimatedList)
-        numEstimated = estCounter.get(name) if name in estCounter.keys() else 0
-        resultDict[name] = numEstimated / numCorrect * 100
-        # print(name, numCorrect, numEstimated, resultDict[name])
+        if expected not in resultDict.keys():
+            resultDict[expected] = [1, 0] if correct else [0, 1]
+        else:
+            if correct:
+                resultDict[expected][0] += 1
+            else:
+                resultDict[expected][1] += 1
+
+    for name, trueFalse in resultDict.items():
+        resultDict[name] = trueFalse[0] / (trueFalse[0] + trueFalse[1]) * 100
 
     sortedList: List[Tuple[str, str]] = sorted(resultDict.items(), key=lambda x: x[1], reverse=True)
     resultDict = {entry[0]: entry[1] for entry in sortedList}
+    totalQuality = 100 - (totalErrors / len(trueList)) * 100
     return totalQuality, resultDict
