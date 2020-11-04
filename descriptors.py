@@ -26,7 +26,7 @@ def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: 
         plt.plot(intensities, alpha=0.5)
 
     desc: DescriptorSet = DescriptorSet(specName)
-    peaks, _ = find_peaks(spec[:, 1], height=0.5)
+    peaks, _ = find_peaks(intensities, height=0.5)
     # remove peaks being too close to each other
     peaks = np.delete(peaks, np.argwhere(np.ediff1d(peaks) <= minDiff*2) + 1)
     prominences = peak_prominences(intensities, peaks)[0]  # i.e., peakHeights minus baseline...
@@ -278,7 +278,7 @@ class TriangleDescriptor(object):
 
         if endInd - peakInd > 2 and peakInd - startInd > 2:
 
-            if (endInd - startInd)%2 == 0:
+            if (endInd - startInd) % 2 == 0:
                 intensities: np.ndarray = np.append(np.linspace(0, 1, peakInd - startInd, endpoint=False),
                                                     np.linspace(1, 0, endInd - peakInd))
             else:
