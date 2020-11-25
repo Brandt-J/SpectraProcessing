@@ -1,6 +1,7 @@
 import numpy as np
 from typing import List, TYPE_CHECKING
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
+from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from importData import specProc
 if TYPE_CHECKING:
@@ -137,6 +138,7 @@ class DescriptorLibrary(object):
         self._descriptorSets.append(descSet)
 
     def apply_to_spectra(self, spectra: np.ndarray) -> List[str]:
+        self._setUpDescriptorsToWavenumbers(spectra[:, 0])
         results: List[str] = []
         for i in range(spectra.shape[1]-1):
             corrs: List[float] = []
@@ -150,6 +152,7 @@ class DescriptorLibrary(object):
                     maxCorr = corr
 
             results.append(bestHit)
+        self._unsetDescritorsFromWavenumbers()
         return results
 
     def getTotalNumberOfDescriptors(self) -> np.ndarray:
@@ -162,6 +165,7 @@ class DescriptorLibrary(object):
         :return: feature matrix rows: Features, columns: Samples
         """
         numTotalDescriptors: int = self.getTotalNumberOfDescriptors()
+        self._setUpDescriptorsToWavenumbers(spectra[:, 0])
         featureMat: np.ndarray = np.zeros((spectra.shape[1]-1, numTotalDescriptors))
         for i in range(spectra.shape[1]-1):
             spec: np.ndarray = spectra[:, [0, i+1]]
@@ -171,6 +175,7 @@ class DescriptorLibrary(object):
                 correlations.append(curCorrs)
             featureMat[i, :] = np.concatenate(correlations)
 
+        self._unsetDescritorsFromWavenumbers()
         return featureMat
 
     def optimize_descriptorSets(self, maxDescriptorsPerSet: int = 5) -> None:
@@ -206,6 +211,16 @@ class DescriptorLibrary(object):
                     ax.plot([desc.peak, desc.peak], [(i+1)*tickLength, i*tickLength], color=colorCycle[i])
         ax.legend()
         return fig
+
+    def _setUpDescriptorsToWavenumbers(self, wavenums: np.ndarray) -> None:
+        for descSet in self._descriptorSets:
+            for desc in descSet.getDescriptors():
+                desc.set_to_wavenumbers(wavenums)
+
+    def _unsetDescritorsFromWavenumbers(self) -> None:
+        for descSet in self._descriptorSets:
+            for desc in descSet.getDescriptors():
+                desc.unset_from_wavenumbers()
 
 
 class DescriptorSet(object):
@@ -264,6 +279,29 @@ class TriangleDescriptor(object):
         self.peak: float = peak  # in Wavenumbers
         self.end: float = end  # in Wavenumbers
 
+        self._startInd: int = np.nan
+        self._peakInd: int = np.nan
+        self._endInd: int = np.nan
+        self._intensities: np.ndarray = None
+
+    def set_to_wavenumbers(self, wavenumbers: np.ndarray) -> None:
+        self._startInd = np.argmin(np.abs(wavenumbers - self.start))
+        self._peakInd = np.argmin(np.abs(wavenumbers - self.peak))
+        self._endInd = np.argmin(np.abs(wavenumbers - self.end))
+
+        if (self._endInd - self._startInd) % 2 == 0:
+            self._intensities = np.append(np.linspace(0, 1, self._peakInd - self._startInd, endpoint=False),
+                                                np.linspace(1, 0, self._endInd - self._peakInd))
+        else:
+            self._intensities = np.append(np.linspace(0, 1, self._peakInd - self._startInd),
+                                                np.linspace(1, 0, self._endInd - self._peakInd))
+
+    def unset_from_wavenumbers(self) -> None:
+        self._startInd: int = np.nan
+        self._peakInd: int = np.nan
+        self._endInd: int = np.nan
+        self._intensities: np.ndarray = None
+
     def get_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
         """
         Spectrum section according to descriptor limits is cut out, normalized and correlated to a triangle shape
@@ -272,24 +310,14 @@ class TriangleDescriptor(object):
         :return: correlationCoefficient
         """
         corr: float = 0
-        startInd = np.argmin(np.abs(spectrum[:, 0] - self.start))
-        peakInd = np.argmin(np.abs(spectrum[:, 0] - self.peak))
-        endInd = np.argmin(np.abs(spectrum[:, 0] - self.end))
-
-        if endInd - peakInd > 2 and peakInd - startInd > 2:
-
-            if (endInd - startInd) % 2 == 0:
-                intensities: np.ndarray = np.append(np.linspace(0, 1, peakInd - startInd, endpoint=False),
-                                                    np.linspace(1, 0, endInd - peakInd))
-            else:
-                intensities: np.ndarray = np.append(np.linspace(0, 1, peakInd - startInd),
-                                                    np.linspace(1, 0, endInd - peakInd))
-
-            specSection: np.ndarray = spectrum[startInd:endInd, 1].copy()
-            specSection -= np.linspace(specSection[0], specSection[-1], endInd-startInd)  # subtract baseline
+        assert self._intensities is not None, f'Descriptor was not yet set to wavenumbers!'
+        if self._endInd - self._peakInd > 2 and self._peakInd - self._startInd > 2:
+            specSection: np.ndarray = spectrum[self._startInd:self._endInd, 1].copy()
+            specSection -= np.linspace(specSection[0], specSection[-1], self._endInd-self._startInd)  # subtract baseline
 
             if not np.all(specSection == 0):
-                corr = np.corrcoef(intensities, specSection)[0, 1]
+                # scipy's version is faster than the one from numpy, result are the same
+                corr = pearsonr(self._intensities, specSection)[0]
             assert not np.isnan(corr)
 
         return corr

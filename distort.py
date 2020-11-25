@@ -70,8 +70,6 @@ def add_ghost_peaks(spectra: np.ndarray, maxLevel: float = 0.1, seed: int = 42) 
     return spectra
 
 
-
-
 def add_noise(spectra: np.ndarray, maxLevel: float = 0.1, seed: int = 42) -> np.ndarray:
     """
     Adds random noise to the spectra..
