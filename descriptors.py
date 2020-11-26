@@ -127,11 +127,10 @@ class DescriptorLibrary(object):
 
     def generate_from_specDatabase(self, database: 'Database', maxDescPerSet: int = 10) -> None:
         for i in range(database.getNumberOfSpectra()):
-            name: str = database.getSpectrumNameOfIndex(i)
             desc: 'DescriptorSet' = getDescriptorSetForSpec(database.getSpectrumNameOfIndex(i),
                                                             database.getSpectrumOfIndex(i),
                                                             maxNumDescriptors=maxDescPerSet)
-            # desc: 'DescriptorSet' = getDescriptorSetForSpecIndexInSpectra(name, i, database.getSpectra())
+
             self._descriptorSets.append(desc)
 
     def add_descriptorSet(self, descSet: 'DescriptorSet') -> None:
@@ -155,8 +154,8 @@ class DescriptorLibrary(object):
         self._unsetDescritorsFromWavenumbers()
         return results
 
-    def getTotalNumberOfDescriptors(self) -> np.ndarray:
-        return np.sum([desc.getNumDescriptors() for desc in self._descriptorSets])
+    def getTotalNumberOfDescriptors(self) -> int:
+        return int(np.sum([desc.getNumDescriptors() for desc in self._descriptorSets]))
 
     def getCorrelationMatrixToSpectra(self, spectra: np.ndarray) -> np.ndarray:
         """
@@ -164,16 +163,22 @@ class DescriptorLibrary(object):
         :param spectra: (N, M) shape array of spectra, first column wavenumbers, all others: intensities
         :return: feature matrix rows: Features, columns: Samples
         """
+        numSpectra: int = spectra.shape[1]-1
         numTotalDescriptors: int = self.getTotalNumberOfDescriptors()
         self._setUpDescriptorsToWavenumbers(spectra[:, 0])
-        featureMat: np.ndarray = np.zeros((spectra.shape[1]-1, numTotalDescriptors))
-        for i in range(spectra.shape[1]-1):
-            spec: np.ndarray = spectra[:, [0, i+1]]
-            correlations: List[np.ndarray] = []
-            for descSet in self._descriptorSets:
-                curCorrs: np.ndarray = descSet.get_correlations_to_spectrum(spec)
-                correlations.append(curCorrs)
-            featureMat[i, :] = np.concatenate(correlations)
+
+        featureMat: np.ndarray = np.zeros((numSpectra, numTotalDescriptors))
+        allDescs: List['TriangleDescriptor'] = self._getAllDescriptors()
+        for i, desc in enumerate(allDescs):
+            corrs = np.zeros(numSpectra)
+            specSection = spectra[desc.startInd:desc.endInd, 1:]
+
+            if desc.endInd - desc.peakInd > 2 and desc.peakInd - desc.startInd > 2:
+                for j in range(numSpectra):
+                    if not np.all(specSection[:, j] == 0):
+                        corrs[j] = pearsonr(desc.intensities, specSection[:, j])[0]
+
+            featureMat[:, i] = corrs
 
         self._unsetDescritorsFromWavenumbers()
         return featureMat
@@ -221,6 +226,13 @@ class DescriptorLibrary(object):
         for descSet in self._descriptorSets:
             for desc in descSet.getDescriptors():
                 desc.unset_from_wavenumbers()
+
+    def _getAllDescriptors(self) -> List['TriangleDescriptor']:
+        allDesc: List['TriangleDescriptor'] = []
+        for descSet in self._descriptorSets:
+            for desc in descSet.getDescriptors():
+                allDesc.append(desc)
+        return allDesc
 
 
 class DescriptorSet(object):
@@ -279,45 +291,46 @@ class TriangleDescriptor(object):
         self.peak: float = peak  # in Wavenumbers
         self.end: float = end  # in Wavenumbers
 
-        self._startInd: int = np.nan
-        self._peakInd: int = np.nan
-        self._endInd: int = np.nan
-        self._intensities: np.ndarray = None
+        self.startInd: int = np.nan
+        self.peakInd: int = np.nan
+        self.endInd: int = np.nan
+        self.intensities: np.ndarray = None
 
     def set_to_wavenumbers(self, wavenumbers: np.ndarray) -> None:
-        self._startInd = np.argmin(np.abs(wavenumbers - self.start))
-        self._peakInd = np.argmin(np.abs(wavenumbers - self.peak))
-        self._endInd = np.argmin(np.abs(wavenumbers - self.end))
+        self.startInd = np.argmin(np.abs(wavenumbers - self.start))
+        self.peakInd = np.argmin(np.abs(wavenumbers - self.peak))
+        self.endInd = np.argmin(np.abs(wavenumbers - self.end))
 
-        if (self._endInd - self._startInd) % 2 == 0:
-            self._intensities = np.append(np.linspace(0, 1, self._peakInd - self._startInd, endpoint=False),
-                                                np.linspace(1, 0, self._endInd - self._peakInd))
+        if (self.endInd - self.startInd) % 2 == 0:
+            self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd, endpoint=False),
+                                                np.linspace(1, 0, self.endInd - self.peakInd))
         else:
-            self._intensities = np.append(np.linspace(0, 1, self._peakInd - self._startInd),
-                                                np.linspace(1, 0, self._endInd - self._peakInd))
+            self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd),
+                                                np.linspace(1, 0, self.endInd - self.peakInd))
 
     def unset_from_wavenumbers(self) -> None:
-        self._startInd: int = np.nan
-        self._peakInd: int = np.nan
-        self._endInd: int = np.nan
-        self._intensities: np.ndarray = None
+        self.startInd: int = np.nan
+        self.peakInd: int = np.nan
+        self.endInd: int = np.nan
+        self.intensities: np.ndarray = None
 
-    def get_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
-        """
-        Spectrum section according to descriptor limits is cut out, normalized and correlated to a triangle shape
-        determined by the descriptor limits.
-        :param spectrum: (N, 2) shape array, first col = wavenumbers
-        :return: correlationCoefficient
-        """
-        corr: float = 0
-        assert self._intensities is not None, f'Descriptor was not yet set to wavenumbers!'
-        if self._endInd - self._peakInd > 2 and self._peakInd - self._startInd > 2:
-            specSection: np.ndarray = spectrum[self._startInd:self._endInd, 1].copy()
-            specSection -= np.linspace(specSection[0], specSection[-1], self._endInd-self._startInd)  # subtract baseline
-
-            if not np.all(specSection == 0):
-                # scipy's version is faster than the one from numpy, result are the same
-                corr = pearsonr(self._intensities, specSection)[0]
-            assert not np.isnan(corr)
-
-        return corr
+    # def get_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
+    #     """
+    #     Spectrum section according to descriptor limits is cut out, normalized and correlated to a triangle shape
+    #     determined by the descriptor limits.
+    #     :param spectrum: (N, 2) shape array, first col = wavenumbers
+    #     :return: correlationCoefficient
+    #     """
+    #     corr: float = 0
+    #     assert self._intensities is not None, f'Descriptor was not yet set to wavenumbers!'
+    #     if self._endInd - self._peakInd > 2 and self._peakInd - self._startInd > 2:
+    #         specSection: np.ndarray = spectrum[self._startInd:self._endInd, 1].copy()
+    #         # the following could seemingly be omitted, but have to test it...
+    #         specSection -= np.linspace(specSection[0], specSection[-1], self._endInd-self._startInd)  # subtract baseline
+    #
+    #         if not np.all(specSection == 0):
+    #             # scipy's version is faster than the one from numpy, result are the same
+    #             corr = pearsonr(self._intensities, specSection)[0]
+    #         assert not np.isnan(corr)
+    #
+    #     return corr
