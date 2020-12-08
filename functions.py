@@ -39,7 +39,7 @@ def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[f
                 resultDict[expected][1] += 1
 
     for name, trueFalse in resultDict.items():
-        resultDict[name] = trueFalse[0] / (trueFalse[0] + trueFalse[1]) * 100
+        resultDict[name] = round(trueFalse[0] / (trueFalse[0] + trueFalse[1]) * 100, 2)
 
     sortedList: List[Tuple[str, str]] = sorted(resultDict.items(), key=lambda x: x[1], reverse=True)
     resultDict = {entry[0]: entry[1] for entry in sortedList}

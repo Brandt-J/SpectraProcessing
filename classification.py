@@ -12,7 +12,7 @@ def balanceDataset(featureMat: np.ndarray, assignments: List[str]) -> Tuple[np.n
     # sampler = over_sampling.RandomOverSampler(random_state=42)
     # sampler = under_sampling.ClusterCentroids(random_state=42)
 
-    print(sampler)
+    print('balancing with:', sampler)
     newData, newAssignments = sampler.fit_resample(featureMat, assignments)
     return newData, newAssignments
 

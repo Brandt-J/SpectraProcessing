@@ -8,7 +8,7 @@ desc_HDPE: DescriptorSet = DescriptorSet('HDPE')
 desc_HDPE.add_descriptor(700, 720, 740)
 desc_HDPE.add_descriptor(1435, 1470, 1485)
 desc_HDPE.add_descriptor(2825, 2852, 2870)
-# desc_HDPE.add_descriptor(2870, 2925, 2965)
+desc_HDPE.add_descriptor(2870, 2925, 2965)
 handMadeDescLib.add_descriptorSet(desc_HDPE)
 
 
@@ -38,21 +38,21 @@ desc_PC.add_descriptor(1060, 1080, 1095)  # C-C-C deformation
 desc_PC.add_descriptor(1250, 1260, 1275)  # aromatic ether stretch
 desc_PC.add_descriptor(1475, 1505, 1550)  # C-C stretch Ring
 desc_PC.add_descriptor(1690, 1770, 1840)  # C=O stretch
-# desc_PC.add_descriptor(2950, 2970, 3020)
+desc_PC.add_descriptor(2950, 2970, 3020)
 desc_PC.add_descriptor(3020, 3040, 3050)
 handMadeDescLib.add_descriptorSet(desc_PC)
 
 
 desc_PET: DescriptorSet = DescriptorSet('PET')  # Assignments according to Andanson, Kazarian, Macromol. Symp.
 desc_PET.add_descriptor(700, 725, 750)  # oop benzene group
-# desc_PET.add_descriptor(820, 845, 860)  # CH2 rocking of glycol  # Maybe add in again? But it's a quite small band
+desc_PET.add_descriptor(820, 845, 860)  # CH2 rocking of glycol  # Maybe add in again? But it's a quite small band
 desc_PET.add_descriptor(860, 872, 890)  # oop benzene group
 desc_PET.add_descriptor(935, 970, 1000)  # C-O stretching glycol
 desc_PET.add_descriptor(1000, 1020, 1050)  # in-plane benzene group
 desc_PET.add_descriptor(1320, 1340, 1360)  # CH2 wagging of glycol
 desc_PET.add_descriptor(1716, 1741, 1760)
 desc_PET.add_descriptor(2870, 2910, 2930)
-# desc_PET.add_descriptor(2930, 2970, 3030)
+desc_PET.add_descriptor(2930, 2970, 3030)
 desc_PET.add_descriptor(3035, 3070, 3090)
 handMadeDescLib.add_descriptorSet(desc_PET)
 
@@ -68,12 +68,12 @@ desc_PP: DescriptorSet = DescriptorSet('PP')
 desc_PP.add_descriptor(795, 807, 820)
 desc_PP.add_descriptor(830, 840, 849)
 desc_PP.add_descriptor(962, 973, 980)
-desc_PC.add_descriptor(988, 996, 1005)
+desc_PP.add_descriptor(988, 996, 1005)
 desc_PP.add_descriptor(1134, 1166, 1180)
 desc_PP.add_descriptor(1337, 1375, 1387)
 desc_PP.add_descriptor(1422, 1452, 1480)
 desc_PP.add_descriptor(2860, 2870, 2885)
-# desc_PP.add_descriptor(2890, 2920, 2940)
+desc_PP.add_descriptor(2890, 2920, 2940)
 desc_PP.add_descriptor(2940, 2950, 2980)
 handMadeDescLib.add_descriptorSet(desc_PP)
 

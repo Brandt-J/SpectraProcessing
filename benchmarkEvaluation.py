@@ -28,7 +28,6 @@ else:
 
 print(f'loading {len(origResults)} spectra took {time.time()-t0} seconds')
 
-
 numSpectra: int = testSpectra.shape[1] - 1
 database = io.get_database()
 
@@ -36,14 +35,13 @@ descriptors: DescriptorLibrary = DescriptorLibrary()
 descriptors.generate_from_specDatabase(database, maxDescPerSet=200)
 # descriptors: DescriptorLibrary = handMadeDescLib
 # descriptors.getDescriptorPlot().show()
-descriptors.optimize_descriptorSets(maxDescriptorsPerSet=10)
+descriptors.optimize_descriptorSets(maxDescriptorsPerSet=5)
 # descriptors.getDescriptorPlot().show()
 
 featureMat: np.ndarray = descriptors.getCorrelationMatrixToSpectra(testSpectra)
 X, y = featureMat.copy(), origResults.copy()
 
 X = StandardScaler().fit_transform(X)
-# print("NO BALANCING")
 X, y = balanceDataset(X, y)
 t0 = time.time()
 clf, uniqueAssignments = test_randForestClassifier(featureMat, origResults)
