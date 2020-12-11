@@ -8,3 +8,11 @@ sampleSpectra.npy
 origResults.txt
 
 Sample Spectra/
+
+cythonModules/build/
+
+cythonModules/corrCoeff.c
+
+cythonModules/corrCoeff.cp38-win_amd64.pyd
+
+cythonModules/corrCoeff.html

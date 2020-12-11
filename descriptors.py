@@ -4,6 +4,7 @@ from scipy.signal import find_peaks, peak_prominences, savgol_filter
 from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 from importData import specProc
+from cythonModules import corrCoeff
 if TYPE_CHECKING:
     from importData import Database
     from matplotlib.axes import Axes
@@ -137,6 +138,11 @@ class DescriptorLibrary(object):
         self._descriptorSets.append(descSet)
 
     def apply_to_spectra(self, spectra: np.ndarray) -> List[str]:
+        """
+        Takes array of spectra and return list of classifications.
+        :param spectra: shape (N, M) array with N wavenumbers and M-1 samples. First Column is Wavenumbers
+        :return: List of Spectra Assignments
+        """
         self._setUpDescriptorsToWavenumbers(spectra[:, 0])
         results: List[str] = []
         for i in range(spectra.shape[1]-1):
@@ -174,9 +180,7 @@ class DescriptorLibrary(object):
             specSection = spectra[desc.startInd:desc.endInd, 1:]
 
             if desc.endInd - desc.peakInd > 2 and desc.peakInd - desc.startInd > 2:
-                for j in range(numSpectra):
-                    if not np.all(specSection[:, j] == 0):
-                        corrs[j] = pearsonr(desc.intensities, specSection[:, j])[0]
+                corrs = corrCoeff.getCorrelationCoefficients(desc.intensities, specSection)
 
             featureMat[:, i] = corrs
 
@@ -236,10 +240,12 @@ class DescriptorLibrary(object):
 
 
 class DescriptorSet(object):
-    def __init__(self, name: str, threshold: float = 0.01):
+    """
+    Set of descriptors describing a particular polymer tyoe.
+    """
+    def __init__(self, name: str):
         super(DescriptorSet, self).__init__()
         self.name = name
-        self._threshold = threshold
         self._descriptors: List['TriangleDescriptor'] = []
 
     def get_mean_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
