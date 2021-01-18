@@ -16,3 +16,5 @@ cythonModules/corrCoeff.c
 cythonModules/corrCoeff.cp38-win_amd64.pyd
 
 cythonModules/corrCoeff.html
+
+SQLCredentials.txt
