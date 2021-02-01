@@ -52,7 +52,7 @@ cdef double getCorrelation(np.ndarray[np.float_t, ndim=1] pattern, np.ndarray[np
     else:
         corr = 0
 
-    # if corr >= 0.5:
+    # if corr >= 0.5:   # This is, what the Hufnagl et al do, but it makes results worse in my case...
     #     corr *= np.trapz(curSpec)  # multiply with peak area
     # else:
     #     corr = 0  # set to zero

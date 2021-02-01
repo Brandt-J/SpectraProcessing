@@ -83,9 +83,9 @@ def getNMostDifferentSpectraIndices(spectra: np.ndarray, n: int) -> List[int]:
     """
     intensities = spectra[:, 1:]
     indices: List[int] = []
-    pca: PCA = PCA(n_components=2)
+    pca: PCA = PCA(n_components=2, random_state=42)
     princComps: np.ndarray = pca.fit_transform(intensities.transpose())
-    centers = k_means(princComps, n)[0]
+    centers = k_means(princComps, n, random_state=42)[0]
 
     for i in range(n):
         distances = np.linalg.norm(princComps-centers[i, :], axis=1)

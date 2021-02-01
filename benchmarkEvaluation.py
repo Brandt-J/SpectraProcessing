@@ -52,7 +52,7 @@ pathSampleAssignments: str = r'Sample Spectra/origResults.txt'
 
 nSpecs = 10
 nMaxDesc = 20
-numVariationsTraining = 1000
+numVariationsTraining = 100
 numVariationsTesting = 100
 
 title = f'{nSpecs} differnt spectra, {nMaxDesc} max Descriptors, {numVariationsTraining} Variations for training\n' \
