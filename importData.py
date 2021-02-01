@@ -10,13 +10,20 @@ from gepardevaluation.analysis.specDataBases import Database
 import numpy as np
 from typing import List, Tuple
 
+from functions import getNMostDifferentSpectraIndices
 
 specProc = spectraProcessing
 
 
-def get_database() -> Database:
+def get_database(maxSpectra: int = np.inf) -> Database:
     newDB: Database = Database('StandardPolymers')
     specNames, spectra = read_from_directory(os.path.join(projectPath, 'Reference Spectra'))
+    if len(specNames) > maxSpectra:
+        indices = getNMostDifferentSpectraIndices(spectra, maxSpectra)
+        specNames = [specNames[i] for i in indices]
+        print('chosen Spectra:', specNames)
+        indices = [0] + [i+1 for i in indices]
+        spectra = spectra[:, indices]
 
     for index, name in enumerate(specNames):
         newDB.addSpectrum(name, spectra[:, [0, index + 1]])

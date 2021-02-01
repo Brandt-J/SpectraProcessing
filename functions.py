@@ -1,4 +1,9 @@
 from typing import List, Tuple, Dict
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.cluster import k_means
+from sklearn.preprocessing import StandardScaler
+from scipy.spatial import distance_matrix
 
 
 def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[float, Dict[str, float]]:
@@ -45,3 +50,24 @@ def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[f
     resultDict = {entry[0]: entry[1] for entry in sortedList}
     totalQuality = 100 - (totalErrors / len(trueList)) * 100
     return totalQuality, resultDict
+
+
+def getNMostDifferentSpectraIndices(spectra: np.ndarray, n: int) -> List[int]:
+    """
+    Takes a set of spectra and returns the indices of the n spectra that are furthest apart from each other,
+    in terms of the first two PCA components.
+    :param spectra: (NxM) array of spec of M-1 spectra with N wavenumbers (wavenumbers in first column).
+    :param n: Desired number of spectra to keep
+    :return:
+    """
+    intensities = spectra[:, 1:]
+    indices: List[int] = []
+    pca: PCA = PCA(n_components=2)
+    princComps: np.ndarray = pca.fit_transform(intensities.transpose())
+    centers = k_means(princComps, n)[0]
+
+    for i in range(n):
+        distances = np.linalg.norm(princComps-centers[i, :], axis=1)
+        indices.append(int(np.argmin(distances)))
+
+    return indices
