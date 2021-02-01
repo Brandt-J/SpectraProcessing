@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-GEPARD - Gepard-Enabled PARticle Detection
-Copyright (C) 2018  Lars Bittrich and Josef Brandt, Leibniz-Institut für 
-Polymerforschung Dresden e. V. <bittrich-lars@ipfdd.de>    
+SPECTRA PROCESSING
+Copyright (C) 2020 Josef Brandt, University of Gothenborg.
+<josef.brandt@gu.se>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
