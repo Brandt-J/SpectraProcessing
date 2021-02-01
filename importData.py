@@ -42,7 +42,6 @@ def get_database(maxSpectra: int = np.inf) -> Database:
     if len(specNames) > maxSpectra:
         indices = getNMostDifferentSpectraIndices(spectra, maxSpectra)
         specNames = [specNames[i] for i in indices]
-        print('chosen Spectra:', specNames)
         indices = [0] + [i+1 for i in indices]
         spectra = spectra[:, indices]
 

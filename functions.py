@@ -24,7 +24,6 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.cluster import k_means
 from sklearn.preprocessing import StandardScaler
-from scipy.spatial import distance_matrix
 
 
 def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[float, Dict[str, float]]:
@@ -81,14 +80,25 @@ def getNMostDifferentSpectraIndices(spectra: np.ndarray, n: int) -> List[int]:
     :param n: Desired number of spectra to keep
     :return:
     """
-    intensities = spectra[:, 1:]
+    maxIndex = np.argmin(np.abs(spectra[:, 0] - 2000))  # only go up to 2000 cm-1, above it's so unspecific...
+    intensities = spectra[:maxIndex, 1:]
+    intensities = StandardScaler().fit_transform(intensities.transpose())
     indices: List[int] = []
     pca: PCA = PCA(n_components=2, random_state=42)
-    princComps: np.ndarray = pca.fit_transform(intensities.transpose())
+    princComps: np.ndarray = pca.fit_transform(intensities)
     centers = k_means(princComps, n, random_state=42)[0]
 
     for i in range(n):
         distances = np.linalg.norm(princComps-centers[i, :], axis=1)
         indices.append(int(np.argmin(distances)))
+
+    # FOR DEBUG DISPLAY
+    # import matplotlib.pyplot as plt
+    # plt.scatter(princComps[:, 0], princComps[:, 1], color='lightgray')
+    # plt.scatter(princComps[indices, 0], princComps[indices, 1], color='black')
+    # plt.xlabel('PC 1')
+    # plt.ylabel('PC 2')
+    # plt.title(f'Chosing {n} out of {princComps.shape[0]} spectra')
+    # plt.show(block=True)
 
     return indices

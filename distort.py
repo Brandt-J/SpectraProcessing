@@ -46,11 +46,12 @@ def create_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, s
         for j in range(np.random.randint(maxIterations)):
             curLevel = np.clip((np.random.rand()*3 + 0.5) * level, 0.0, 1.0)
             iterationSeed += 1
-            newSpecs = add_noise(newSpecs, level=curLevel, seed=iterationSeed)
-            if curRand > 0.2:
-                newSpecs = add_distortions(newSpecs, level=curLevel, seed=iterationSeed)
-            if curRand > 0.4:
-                newSpecs = add_ghost_peaks(newSpecs, level=curLevel, seed=iterationSeed)
+            if curLevel > 0.0:
+                newSpecs = add_noise(newSpecs, level=curLevel, seed=iterationSeed)
+                if curRand > 0.2:
+                    newSpecs = add_distortions(newSpecs, level=curLevel, seed=iterationSeed)
+                if curRand > 0.4:
+                    newSpecs = add_ghost_peaks(newSpecs, level=curLevel, seed=iterationSeed)
 
         start, stop = (i+1) * numSpectra + 1, (i+2) * numSpectra + 1
         finalSpectra[:, start:stop] = newSpecs[:, 1:]
