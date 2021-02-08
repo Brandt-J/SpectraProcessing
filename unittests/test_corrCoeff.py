@@ -23,6 +23,7 @@ import unittest
 import numpy as np
 from scipy.stats import pearsonr
 from cythonModules import corrCoeff
+from specCorrelation import getCorrelation, CorrelationMode
 
 
 class TestCorrCoeff(unittest.TestCase):
@@ -35,3 +36,19 @@ class TestCorrCoeff(unittest.TestCase):
             for i, corr in enumerate(cythonCorrs):
                 self.assertAlmostEqual(corr, pearsonr(pattern, specs[:, i])[0])
 
+    def test_differentCorelationModes(self):
+        np.random.seed(42)
+        testSet: np.ndarray = np.arange(10000, dtype=np.float)
+        sameSet: np.ndarray = testSet.copy()
+        zeroSet: np.ndarray = np.random.random(len(testSet))
+        antiSet: np.ndarray = testSet.copy() * -1
+
+        mode: CorrelationMode = CorrelationMode.PEARSON
+        self.assertEqual(getCorrelation(testSet, sameSet, mode), 1.0)
+        self.assertAlmostEqual(getCorrelation(testSet, zeroSet, mode), 0.0, places=1)
+        self.assertEqual(getCorrelation(testSet, antiSet, mode), -1.0)
+
+        mode = CorrelationMode.SFEC
+        self.assertEqual(getCorrelation(testSet, sameSet, mode), 1.0)
+        self.assertAlmostEqual(getCorrelation(testSet, zeroSet, mode), 0.0, places=1)
+        self.assertEqual(getCorrelation(testSet, antiSet, mode), 1.0)

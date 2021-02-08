@@ -20,8 +20,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import numpy as np
+from scipy.stats import pearsonr
+from enum import Enum
 from typing import List, Tuple
 import processing as specProc
+from cythonModules import corrCoeff
 
 
 class Database(object):
@@ -77,7 +80,9 @@ class Database(object):
         return self._spectraNames.index(name)
 
     def preprocessSpectra(self) -> None:
-        pass
+        for i in range(self._spectra.shape[1] - 1):
+            self._spectra[:, i + 1] -= specProc.als_baseline(self._spectra[:, i + 1], smoothness_param=1e6)
+            self._spectra[:, i + 1] = specProc.normalizeIntensities(self._spectra[:, i + 1])
 
     def removeSpectrumOfIndex(self, index: int) -> None:
         self._spectra = np.delete(self._spectra, index, axis=1)
@@ -96,35 +101,58 @@ class Database(object):
         return newSpec
 
 
-def correlate_spectra(spectra: np.ndarray, database: Database):
+class CorrelationMode(Enum):
+    PEARSON = 0
+    SFEC = 1
+
+
+def correlate_spectra(spectra: np.ndarray, database: Database, corrMode: CorrelationMode = CorrelationMode.PEARSON,
+                      preproc: bool = False) -> List[str]:
+    """
+    Takes a set of spectra and a database and returns a List of names of spectra with best hit
+    :param spectra: NxM spectra array of M-1 spectra with N wavenumbers (wavenumbers in first column)
+    :param database: The database to use
+    :param corrMode: Desired mode of correlation
+    :param preproc: Whether to apply preprocessing (i.e., baseline removal and normalization) to the spectra.
+    :return:
+    """
     refSpecs: np.ndarray = database.getSpectra()
-
-    import time
-    t0 = time.time()
-    # preprocess ref spectra
-    for i in range(refSpecs.shape[1]-1):
-        refSpecs[:, i+1] -= specProc.als_baseline(refSpecs[:, i+1], smoothness_param=1e6)
-        refSpecs[:, i+1] = specProc.normalizeIntensities(refSpecs[:, i+1])
-    print(f"preprocessing took {round(time.time()-t0, 2)} seconds")
-
     results: List[str] = []
-    t0 = time.time()
     sampleSpecs, refSpecs = mapSpectrasetsToSameWavenumbers(spectra, refSpecs)
-    print(f"mapping spectra sets to each other took {round(time.time() - t0, 2)} seconds")
 
-    t0 = time.time()
     for i in range(sampleSpecs.shape[1]-1):
         spec: np.ndarray = sampleSpecs[:, i+1].copy()
-        spec -= specProc.als_baseline(spec, smoothness_param=1e6)
-        spec = specProc.normalizeIntensities(spec)
+        if preproc:
+            spec -= specProc.als_baseline(spec, smoothness_param=1e6)
+            spec = specProc.normalizeIntensities(spec)
 
         corrcoeffs: np.ndarray = np.zeros(refSpecs.shape[1]-1)
         for j in range(refSpecs.shape[1]-1):
-            corrcoeffs[j] = np.corrcoef(spec, refSpecs[:, j+1])[0, 1]
-        results.append(database.getSpectrumNameOfIndex(np.argmax(corrcoeffs)))
-    print(f"specCorrelation took {round(time.time() - t0, 2)} seconds")
+            corrcoeffs[j] = getCorrelation(spec, refSpecs[:, j+1], corrMode)
+
+        bestIndex = int(np.argmax(corrcoeffs))
+        results.append(database.getSpectrumNameOfIndex(bestIndex))
 
     return results
+
+
+def getCorrelation(intensities1: np.ndarray, intensities2: np.ndarray, mode: CorrelationMode) -> float:
+    """
+    Takes two intenity vectors and returns their correlation measure, according to the specified mode
+    :param intensities1: shape (N) array of test data
+    :param intensities2: shape (N) array of reference data
+    :param mode: the desired correlation mode
+    :return:
+    """
+    assert len(intensities1) == len(intensities2)
+    corr: float = np.nan
+    if mode == CorrelationMode.PEARSON:
+        corr = pearsonr(intensities1, intensities2)[0]
+    elif mode == CorrelationMode.SFEC:
+        corr = corrCoeff.sfec(intensities1, intensities2)
+
+    assert corr != np.nan
+    return corr
 
 
 def mapSpectrasetsToSameWavenumbers(set1: np.ndarray, set2: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
