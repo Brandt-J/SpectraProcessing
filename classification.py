@@ -19,12 +19,44 @@ If not, see <https://www.gnu.org/licenses/>.
 """
 
 
+import numpy as np
+import time
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
 from imblearn import over_sampling, under_sampling
-import numpy as np
-from collections import Counter
-from typing import List, Tuple
+from typing import List, Tuple, TYPE_CHECKING
+if TYPE_CHECKING:
+    from descriptors import DescriptorLibrary
+
+
+class RandomDecisionForest(object):
+    def __init__(self, descLib: 'DescriptorLibrary'):
+        super(RandomDecisionForest, self).__init__()
+        self._descLib: 'DescriptorLibrary' = descLib
+        self._clf: RandomForestClassifier = RandomForestClassifier(n_estimators=100, max_features='sqrt', random_state=42)
+        self._uniqueAssignments: List[str] = []  #
+
+    def trainWithSpectra(self, trainSpecs: np.ndarray, assignments: List[str]) -> None:
+        t0 = time.time()
+        featureMat: np.ndarray = self._descLib.getCorrelationMatrixToSpectra(trainSpecs)
+        self._uniqueAssignments = list(np.unique(assignments))
+        assert len(assignments) == featureMat.shape[0]
+        featureMat = StandardScaler().fit_transform(featureMat)
+        y: List[int] = [self._uniqueAssignments.index(ass) for ass in assignments]
+        X, y = balanceDataset(featureMat, y)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=42)
+
+        print(f'creating and training rdf on {len(y_train)} samples with {X_train.shape[1]} features')
+        self._clf.fit(X_train, y_train)
+        score = self._clf.score(X_test, y_test)
+        print(f'Classifier score is {score}, training and testing took {round(time.time()-t0, 2)} seconds.')
+
+    def evaluateSpectra(self, spectra: np.ndarray) -> List[str]:
+        featureMat: np.ndarray = self._descLib.getCorrelationMatrixToSpectra(spectra)
+        featureMat = StandardScaler().fit_transform(featureMat)
+        descriptorResults: List[str] = [self._uniqueAssignments[i] for i in self._clf.predict(featureMat)]
+        return descriptorResults
 
 
 def balanceDataset(featureMat: np.ndarray, assignments: List[str]) -> Tuple[np.ndarray, List[str]]:
@@ -37,18 +69,3 @@ def balanceDataset(featureMat: np.ndarray, assignments: List[str]) -> Tuple[np.n
     newData, newAssignments = sampler.fit_resample(featureMat, assignments)
     return newData, newAssignments
 
-
-def test_randForestClassifier(featureMatrix: np.ndarray, assignments: List[str]) -> Tuple[RandomForestClassifier, List[str]]:
-    assert len(assignments) == featureMatrix.shape[0]
-    X: np.ndarray = featureMatrix
-    uniqueAssignments: List[str] = list(np.unique(assignments))
-    y: List[int] = [uniqueAssignments.index(ass) for ass in assignments]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=42)
-
-    print(f'creating and training rdf on {len(y_train)} samples with {X_train.shape[1]} features')
-    clf: RandomForestClassifier = RandomForestClassifier(n_estimators=100, max_features='sqrt', random_state=42)
-    clf.fit(X_train, y_train)
-    score = clf.score(X_test, y_test)
-    print(f'Classifier score is {score}')
-
-    return clf, uniqueAssignments

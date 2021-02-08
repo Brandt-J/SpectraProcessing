@@ -20,7 +20,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import os
-
 from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
@@ -80,6 +79,12 @@ def get_test_spectra(maxSpectraPerFolder=1e6) -> Tuple[List[str], np.ndarray]:
         spectraAdded = finalSpecAdded
 
     return allNames, allSpectra
+
+
+def getTestSpectraFromDatabase(database: 'Database', numVariations: int = 1000) -> Tuple[np.ndarray, List[str]]:
+    origResults = database._spectraNames.copy() * numVariations
+    testSpectra = create_n_distorted_copies(database.getSpectra(), numVariations-1, level=0.3, seed=1337)
+    return testSpectra, origResults
 
 
 def read_from_directory(path: str, fixName: str = None, maxSpectra=1e6) -> Tuple[List[str], np.ndarray]:

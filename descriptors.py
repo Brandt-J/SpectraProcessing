@@ -22,7 +22,6 @@ If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 from typing import List, TYPE_CHECKING
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
-from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
 import processing as specProc
 from cythonModules import corrCoeff
@@ -36,7 +35,7 @@ def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: 
                             minDiff: int = 5) -> 'DescriptorSet':
     intensities = spec[:, 1].copy()
     filterSize = round(len(intensities)/100)
-    if filterSize %2 == 0:
+    if filterSize % 2 == 0:
         filterSize += 1
     intensities = savgol_filter(intensities, filterSize, 3)
 
