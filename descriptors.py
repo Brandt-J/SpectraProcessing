@@ -24,7 +24,7 @@ from typing import List, TYPE_CHECKING
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
 from scipy.stats import pearsonr
 import matplotlib.pyplot as plt
-from importData import specProc
+import processing as specProc
 from cythonModules import corrCoeff
 if TYPE_CHECKING:
     from importData import Database

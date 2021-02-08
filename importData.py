@@ -20,24 +20,16 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import os
-import sys
-from pathlib import Path
 
-curPath: Path = Path(os.path.realpath(__file__))
-projectPath: Path = curPath.parent
-sys.path.append(str(projectPath.parent))
-from gepardevaluation.analysis import spectraProcessing
-from gepardevaluation.analysis.specDataBases import Database
+from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
-
 from functions import getNMostDifferentSpectraIndices
-
-specProc = spectraProcessing
 
 
 def get_database(maxSpectra: int = np.inf) -> Database:
     newDB: Database = Database('StandardPolymers')
+    projectPath = os.getcwd()
     specNames, spectra = read_from_directory(os.path.join(projectPath, 'Reference Spectra'))
     if len(specNames) > maxSpectra:
         indices = getNMostDifferentSpectraIndices(spectra, maxSpectra)
