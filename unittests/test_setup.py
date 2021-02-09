@@ -24,7 +24,7 @@ from importData import *
 
 
 class TestSetup(unittest.TestCase):
-    def test_dbSetup(self) -> None:
+    def test_dbSetup(self):
         newDB: Database = get_database()
         self.assertEqual(type(newDB), Database)
         self.assertEqual(newDB.getNumberOfSpectra(), 10)

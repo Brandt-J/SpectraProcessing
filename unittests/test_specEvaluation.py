@@ -22,7 +22,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import unittest
 import numpy as np
 from typing import List
-from importData import get_database, get_test_spectra
+from importData import get_database, load_test_spectra_from_csv
 from specCorrelation import correlate_spectra, mapSpectrasetsToSameWavenumbers
 
 
@@ -46,7 +46,7 @@ class TestSpecEvaluation(unittest.TestCase):
         self.assertTrue(np.array_equal(newSpecs1[:, 0], newSpecs2[:, 0]))
 
     def test_specCorr(self) -> None:
-        names, specs = get_test_spectra(maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
+        names, specs = load_test_spectra_from_csv(maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
         db = get_database()
 
         # just to see that no errors occur..

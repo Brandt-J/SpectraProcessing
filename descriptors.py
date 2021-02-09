@@ -177,7 +177,7 @@ class DescriptorLibrary(object):
                     maxCorr = corr
 
             results.append(bestHit)
-        self._unsetDescritorsFromWavenumbers()
+        self._unsetDescriptorsFromWavenumbers()
         return results
 
     def getTotalNumberOfDescriptors(self) -> int:
@@ -201,10 +201,9 @@ class DescriptorLibrary(object):
 
             if desc.endInd - desc.peakInd > 2 and desc.peakInd - desc.startInd > 2:
                 corrs = corrCoeff.getCorrelationCoefficients(desc.intensities, specSection)
+                featureMat[:, i] = corrs
 
-            featureMat[:, i] = corrs
-
-        self._unsetDescritorsFromWavenumbers()
+        self._unsetDescriptorsFromWavenumbers()
         return featureMat
 
     def optimize_descriptorSets(self, maxDescriptorsPerSet: int = 5) -> None:
@@ -246,7 +245,7 @@ class DescriptorLibrary(object):
             for desc in descSet.getDescriptors():
                 desc.set_to_wavenumbers(wavenums)
 
-    def _unsetDescritorsFromWavenumbers(self) -> None:
+    def _unsetDescriptorsFromWavenumbers(self) -> None:
         for descSet in self._descriptorSets:
             for desc in descSet.getDescriptors():
                 desc.unset_from_wavenumbers()

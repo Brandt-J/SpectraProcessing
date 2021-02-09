@@ -20,6 +20,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import os
+import time
 from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
@@ -42,7 +43,33 @@ def get_database(maxSpectra: int = np.inf) -> Database:
     return newDB
 
 
-def get_test_spectra(maxSpectraPerFolder=1e6) -> Tuple[List[str], np.ndarray]:
+def getTestSpectra(specFilePath: str, assignmentFilePath: str, forceRegenerate: bool,
+                   maxSpecPerFolder: int = 1000) -> Tuple[np.ndarray, List[str]]:
+    """
+    Loads test spectra and their assignments.  If possible (and not forceRegenerate), the last
+    used dataset is loaded from the numpy file (which is much faster). If no numpy file is found,
+    it falls back to loading test data from the csv files.
+    :param specFilePath: Path to .npy file with testSpectra
+    :param assignmentFilePath: Path to .txt file with test spec assignments
+    :param forceRegenerate: Force to regenerate files from csv, even if .npy files are present.
+    :param maxSpecPerFolder: Maximum number of spec files per folder
+    :return: Tuple[sampleSpecArray (NxM) of M-1 spectra with N wavenumbers (wavenums in first col), List of M-1 assignments]
+    """
+    t0 = time.time()
+    if forceRegenerate or not (os.path.exists(specFilePath) and os.path.exists(assignmentFilePath)):
+        print('regenerating sample spectra from files...')
+        origResults, testSpectra = load_test_spectra_from_csv(maxSpectraPerFolder=maxSpecPerFolder)
+        np.savetxt(assignmentFilePath, origResults, fmt='%s')
+        np.save(specFilePath, testSpectra)
+    else:
+        origResults: List[str] = list(np.genfromtxt(assignmentFilePath, dtype=str))
+        testSpectra: np.ndarray = np.load(specFilePath)
+
+    print(f'loading {len(origResults)} spectra took {time.time() - t0} seconds')
+    return testSpectra, origResults
+
+
+def load_test_spectra_from_csv(maxSpectraPerFolder=1e6) -> Tuple[List[str], np.ndarray]:
     sampleDirectory = 'Sample Spectra'
     wd = os.getcwd()
     # just to make compatible with unittest...

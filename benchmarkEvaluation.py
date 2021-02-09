@@ -26,25 +26,18 @@ import importData as io
 from descriptors import DescriptorLibrary
 from classification import RandomDecisionForest
 from evaluationTest import testEvaluationOnSpectra
+from specCorrelation import CorrelationMode
+
 
 pathSampleSpec: str = r'Sample Spectra/sampleSpectra.npy'
 pathSampleAssignments: str = r'Sample Spectra/origResults.txt'
 preprocessSpectra: bool = True  # Whether or not subtract baseline and normalize spectra for database search
-forceRegenerate: bool = False
-nMaxDBSpecs = 10  # maximum number of spectra in the database
-nMaxDesc = 20  # maximum number of descriptors per spectrum
+correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON, CorrelationMode.SFEC]
+nMaxDBSpecs: int = 10  # maximum number of spectra in the database
+nMaxDesc: int = 20  # maximum number of descriptors per spectrum
 
-t0 = time.time()
-if forceRegenerate or not (os.path.exists(pathSampleSpec) and os.path.exists(pathSampleAssignments)):
-    print('regenerating sample spectra from files...')
-    origResults, testSpectra = io.get_test_spectra()
-    np.savetxt(pathSampleAssignments, origResults, fmt='%s')
-    np.save(pathSampleSpec, testSpectra)
-else:
-    origResults: List[str] = list(np.genfromtxt(pathSampleAssignments, dtype=str))
-    testSpectra: np.ndarray = np.load(pathSampleSpec)
-
-print(f'loading {len(origResults)} spectra took {time.time()-t0} seconds')
+testSpectra, origResults = io.getTestSpectra(pathSampleSpec, pathSampleAssignments, forceRegenerate=True,
+                                             maxSpecPerFolder=100)
 
 database = io.get_database(maxSpectra=nMaxDBSpecs)
 database.preprocessSpectra()
@@ -55,4 +48,6 @@ descriptors.optimize_descriptorSets(maxDescriptorsPerSet=nMaxDesc)
 rdf: RandomDecisionForest = RandomDecisionForest(descriptors)
 rdf.trainWithSpectra(testSpectra, origResults)
 
-testEvaluationOnSpectra(testSpectra, origResults, database, rdf, preprocessSpectra, plotSpectra=True)
+figure, results = testEvaluationOnSpectra(testSpectra, origResults, database, rdf, preprocessSpectra, numIterations=5,
+                                          corrModes=correlationModes)
+figure.show()

@@ -50,7 +50,7 @@ class RandomDecisionForest(object):
         print(f'creating and training rdf on {len(y_train)} samples with {X_train.shape[1]} features')
         self._clf.fit(X_train, y_train)
         score = self._clf.score(X_test, y_test)
-        print(f'Classifier score is {score}, training and testing took {round(time.time()-t0, 2)} seconds.')
+        print(f'Classifier score is {round(score, 2)}, training and testing took {round(time.time()-t0, 2)} seconds.')
 
     def evaluateSpectra(self, spectra: np.ndarray) -> List[str]:
         featureMat: np.ndarray = self._descLib.getCorrelationMatrixToSpectra(spectra)
