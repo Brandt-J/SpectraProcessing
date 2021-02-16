@@ -23,9 +23,9 @@ import numpy as np
 from scipy.signal import gaussian
 
 
-def create_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, seed: int = 42) -> np.ndarray:
+def append_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, seed: int = 42) -> np.ndarray:
     """
-    Creates n copies with distortions of the given spectra set.
+    Appends n copies with distortions of the given spectra set to the original set.
     :param spectra: (N, M) array, M-1 spectra with N wavenumbers, wavenumbers in first column
     :param n: int, number of variations to create
     :param level: Max height of added distortion, relative to normalized intensity
@@ -55,7 +55,6 @@ def create_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, s
 
         start, stop = (i+1) * numSpectra + 1, (i+2) * numSpectra + 1
         finalSpectra[:, start:stop] = newSpecs[:, 1:]
-
     return finalSpectra
 
 

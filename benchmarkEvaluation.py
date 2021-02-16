@@ -17,8 +17,6 @@ You should have received a copy of the GNU General Public License
 along with this program, see COPYING.
 If not, see <https://www.gnu.org/licenses/>.
 """
-import time
-import os
 from typing import List
 import numpy as np
 
@@ -27,27 +25,34 @@ from descriptors import DescriptorLibrary
 from classification import RandomDecisionForest
 from evaluationTest import testEvaluationOnSpectra
 from specCorrelation import CorrelationMode
+from testSpectra import TestSpectra
 
-
-pathSampleSpec: str = r'Sample Spectra/sampleSpectra.npy'
-pathSampleAssignments: str = r'Sample Spectra/origResults.txt'
 preprocessSpectra: bool = True  # Whether or not subtract baseline and normalize spectra for database search
-correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON, CorrelationMode.SFEC]
+correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON]
 nMaxDBSpecs: int = 10  # maximum number of spectra in the database
 nMaxDesc: int = 20  # maximum number of descriptors per spectrum
 
-testSpectra, origResults = io.getTestSpectra(pathSampleSpec, pathSampleAssignments, forceRegenerate=True,
-                                             maxSpecPerFolder=100)
+testSpecObj = TestSpectra()
+# testSpecObj.loadFromNPY()
+testSpecObj.generateFromRefSpecs(plasticContent=1.0, numVariations=100, maxPlastTypes=nMaxDBSpecs)
+# testSpecObj.generateFromSampleDir()
 
-database = io.get_database(maxSpectra=nMaxDBSpecs)
+database = io.get_database(maxSpectra=nMaxDBSpecs, includeNonPlastic=False)
 database.preprocessSpectra()
 
 descriptors: DescriptorLibrary = DescriptorLibrary()
 descriptors.generate_from_specDatabase(database, maxDescPerSet=200)
 descriptors.optimize_descriptorSets(maxDescriptorsPerSet=nMaxDesc)
 rdf: RandomDecisionForest = RandomDecisionForest(descriptors)
-rdf.trainWithSpectra(testSpectra, origResults)
 
-figure, results = testEvaluationOnSpectra(testSpectra, origResults, database, rdf, preprocessSpectra, numIterations=5,
-                                          corrModes=correlationModes)
+trainSpectra: np.ndarray = testSpecObj.getPolymerSpectra()
+trainAssignments: List[str] = testSpecObj.getPolymerAssignments()
+rdf.trainWithSpectra(trainSpectra, trainAssignments)
+
+testSpectra = testSpecObj.getAllSpectra()
+testAssignments = testSpecObj.getAllAssignments()
+print("testing with", testSpecObj.getNumberOfPlastics(), "plastic spectra, plastic content:", testSpecObj.getPlasticContent())
+
+figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, rdf, preprocessSpectra,
+                                          numIterations=10, dbCutoff=0.7, corrModes=correlationModes)
 figure.show()

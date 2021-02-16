@@ -24,18 +24,27 @@ import time
 from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
-from functions import getNMostDifferentSpectraIndices
+from functions import getNMostDifferentSpectra, mapSpectrasetsToSameWavenumbers
+
+# Path to folders for regenerating data
+sampleDirectory: str = 'Sample Spectra Plastic'
+refPlasticDirectory: str = 'Reference Spectra Plastic'
+refNonPlasticDirectory: str = 'Reference Spectra Non Plastic'
 
 
-def get_database(maxSpectra: int = np.inf) -> Database:
+def get_database(maxSpectra: int = np.inf, includeNonPlastic: bool = False) -> Database:
     newDB: Database = Database('StandardPolymers')
     projectPath = os.getcwd()
-    specNames, spectra = read_from_directory(os.path.join(projectPath, 'Reference Spectra'))
+    specNames, spectra = load_specCSVs_from_directory(os.path.join(projectPath, 'Reference Spectra Plastic'))
+    if includeNonPlastic:
+        nonPlastNames, nonPlastSpectra = load_specCSVs_from_directory(os.path.join(projectPath, 'Reference Spectra Non Plastic'))
+        spectra, nonPlastSpectra = mapSpectrasetsToSameWavenumbers(spectra, nonPlastSpectra)
+        assert spectra.shape[0] == nonPlastSpectra.shape[0]
+        spectra = np.hstack((spectra, nonPlastSpectra[:, 1:]))
+        specNames = specNames + nonPlastNames
+
     if len(specNames) > maxSpectra:
-        indices = getNMostDifferentSpectraIndices(spectra, maxSpectra)
-        specNames = [specNames[i] for i in indices]
-        indices = [0] + [i+1 for i in indices]
-        spectra = spectra[:, indices]
+        specNames, spectra = getNMostDifferentSpectra(specNames, spectra, maxSpectra)
 
     for index, name in enumerate(specNames):
         newDB.addSpectrum(name, spectra[:, [0, index + 1]])
@@ -43,45 +52,24 @@ def get_database(maxSpectra: int = np.inf) -> Database:
     return newDB
 
 
-def getTestSpectra(specFilePath: str, assignmentFilePath: str, forceRegenerate: bool,
-                   maxSpecPerFolder: int = 1000) -> Tuple[np.ndarray, List[str]]:
+def load_specCSVs_from_subfolders(parentDirectory: str, maxSpectraPerFolder: int = 1e6) -> Tuple[List[str], np.ndarray]:
     """
-    Loads test spectra and their assignments.  If possible (and not forceRegenerate), the last
-    used dataset is loaded from the numpy file (which is much faster). If no numpy file is found,
-    it falls back to loading test data from the csv files.
-    :param specFilePath: Path to .npy file with testSpectra
-    :param assignmentFilePath: Path to .txt file with test spec assignments
-    :param forceRegenerate: Force to regenerate files from csv, even if .npy files are present.
-    :param maxSpecPerFolder: Maximum number of spec files per folder
-    :return: Tuple[sampleSpecArray (NxM) of M-1 spectra with N wavenumbers (wavenums in first col), List of M-1 assignments]
+    Goes through the subdirectories of the given parentDirectory and loads all the spectra there.
+    :param parentDirectory:
+    :param maxSpectraPerFolder:
+    :return:
     """
-    t0 = time.time()
-    if forceRegenerate or not (os.path.exists(specFilePath) and os.path.exists(assignmentFilePath)):
-        print('regenerating sample spectra from files...')
-        origResults, testSpectra = load_test_spectra_from_csv(maxSpectraPerFolder=maxSpecPerFolder)
-        np.savetxt(assignmentFilePath, origResults, fmt='%s')
-        np.save(specFilePath, testSpectra)
-    else:
-        origResults: List[str] = list(np.genfromtxt(assignmentFilePath, dtype=str))
-        testSpectra: np.ndarray = np.load(specFilePath)
-
-    print(f'loading {len(origResults)} spectra took {time.time() - t0} seconds')
-    return testSpectra, origResults
-
-
-def load_test_spectra_from_csv(maxSpectraPerFolder=1e6) -> Tuple[List[str], np.ndarray]:
-    sampleDirectory = 'Sample Spectra'
     wd = os.getcwd()
     # just to make compatible with unittest...
     if os.path.basename(wd) == 'unittests':
-        sampleDirectory = os.path.join(os.path.dirname(wd), sampleDirectory)
+        directory = os.path.join(os.path.dirname(wd), parentDirectory)
 
-    subfolders = [x[1] for x in os.walk(sampleDirectory)][0]
+    subfolders = [x[1] for x in os.walk(parentDirectory)][0]
     spectraSets: List[Tuple[List[str], np.ndarray]] = []
     for folderName in subfolders:
         if not folderName.endswith('_skip'):
-            path = os.path.join(sampleDirectory, folderName)
-            spectraSets.append(read_from_directory(path, fixName=folderName, maxSpectra=maxSpectraPerFolder))
+            path = os.path.join(parentDirectory, folderName)
+            spectraSets.append(load_specCSVs_from_directory(path, fixName=folderName, maxSpectra=maxSpectraPerFolder))
 
     wavenums: List[np.ndarray] = [spectra[:, 0] for _, spectra in spectraSets]
     minCommon, maxCommon = max([curWavenums[0] for curWavenums in wavenums]), \
@@ -110,11 +98,18 @@ def load_test_spectra_from_csv(maxSpectraPerFolder=1e6) -> Tuple[List[str], np.n
 
 def getTestSpectraFromDatabase(database: 'Database', numVariations: int = 1000) -> Tuple[np.ndarray, List[str]]:
     origResults = database._spectraNames.copy() * numVariations
-    testSpectra = create_n_distorted_copies(database.getSpectra(), numVariations-1, level=0.3, seed=1337)
+    testSpectra = append_n_distorted_copies(database.getSpectra(), numVariations-1, level=0.3, seed=1337)
     return testSpectra, origResults
 
 
-def read_from_directory(path: str, fixName: str = None, maxSpectra=1e6) -> Tuple[List[str], np.ndarray]:
+def load_specCSVs_from_directory(path: str, fixName: str = None, maxSpectra=1e6) -> Tuple[List[str], np.ndarray]:
+    """
+    Reads Spectra from CSV viles in path. If given, a fix name is assigned to each spectrum
+    :param path: Directory path
+    :param fixName: If None, each spectrum has the filename as name, otherwise the indicated fixName
+    :param maxSpectra: Max number of spectra to take.
+    :return: Tuple[Assignment List, spectra array]
+    """
     spectra: np.ndarray = None
     names: list = []
     numSpectra: int = 0
@@ -125,7 +120,6 @@ def read_from_directory(path: str, fixName: str = None, maxSpectra=1e6) -> Tuple
             names.append(specName)
 
             with open(os.path.join(path, file), 'r') as fp:
-
                 if spectra is None:
                     wavenumbers = []
                     # for index, row in enumerate(reader):

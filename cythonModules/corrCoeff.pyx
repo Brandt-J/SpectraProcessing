@@ -45,7 +45,7 @@ def sfec(np.float_t[:] intens1, np.float_t[:] intens2):
     cdef double sum2 = 0.0
     cdef double sum3 = 0.0
     cdef double corr = np.nan
-    cdef double delta1, delta2, nextVal
+    cdef double delta1, delta2
     cdef int n = len(intens1)
 
     for i in range(n - 1):

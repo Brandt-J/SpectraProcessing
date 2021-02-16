@@ -52,10 +52,25 @@ class RandomDecisionForest(object):
         score = self._clf.score(X_test, y_test)
         print(f'Classifier score is {round(score, 2)}, training and testing took {round(time.time()-t0, 2)} seconds.')
 
-    def evaluateSpectra(self, spectra: np.ndarray) -> List[str]:
+    def evaluateSpectra(self, spectra: np.ndarray, cutoff: float = 0.0) -> List[str]:
+        """
+        Takes an array of spectra and returns the determined assignments for each spectrum. "Unknown" is returned
+        if class probability dropbs below the cutoff.
+        :param spectra: (NxM) shape array of spectra of M-1 spectra with N wavenumbers (wavenumbers in first column)
+        :param cutoff: (0...1) value for required class probability for assigmnent. Will be "unknown" otherwise.
+        :return:
+        """
         featureMat: np.ndarray = self._descLib.getCorrelationMatrixToSpectra(spectra)
         featureMat = StandardScaler().fit_transform(featureMat)
-        descriptorResults: List[str] = [self._uniqueAssignments[i] for i in self._clf.predict(featureMat)]
+        probabilities: np.ndarray = self._clf.predict_proba(featureMat)
+        descriptorResults: List[str] = []
+        for i, prob in enumerate(probabilities):
+            maxProb = np.max(prob)
+            if maxProb >= cutoff:
+                maxIndices: np.ndarray = np.where(prob == maxProb)[0]
+                descriptorResults.append(self._uniqueAssignments[int(maxIndices[0])])
+            else:
+                descriptorResults.append("unknown")
         return descriptorResults
 
 

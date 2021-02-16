@@ -1,0 +1,33 @@
+2020-11-25 10:29:52,264 - INFO - Connection With Omnic Established
+2020-11-25 10:29:52,279 - INFO - switching to mode: MeasureModes.OPTICAL_SCAN
+2020-11-25 10:29:52,287 - INFO - switching to mode: MeasureModes.OPTICAL_SCAN
+2020-11-25 10:34:02,570 - DEBUG - Width: 503.65630712979885, height: 400.36563071297985, rotation: 0.0
+2020-11-25 10:34:02,570 - DEBUG - Points x: (-22881.3, -16650.0)
+2020-11-25 10:34:02,571 - DEBUG - Points y: (-2560.9, 2700.0)
+2020-11-25 10:34:02,571 - DEBUG - Points z: (20942.2, 20968.5)
+2020-11-25 10:34:02,571 - INFO - Fit deviation: [ 0.8496094  -0.8339844   0.78515625 -0.7988281 ]
+2020-11-25 10:34:05,040 - INFO - DDE Connection with Omnic was Terminated
+2020-11-25 10:36:53,238 - INFO - Connection With Omnic Established
+2020-11-25 10:36:53,297 - INFO - switching to mode: MeasureModes.OPTICAL_SCAN
+2020-11-25 10:36:54,843 - INFO - switching to mode: MeasureModes.OPTICAL_SCAN
+2020-11-25 10:37:11,953 - DEBUG - Width: 503.65630712979885, height: 400.36563071297985, rotation: 0.0
+2020-11-25 10:37:11,953 - DEBUG - Points x: (-22881.3, -16650.0)
+2020-11-25 10:37:11,953 - DEBUG - Points y: (-2560.9, 2700.0)
+2020-11-25 10:37:11,954 - DEBUG - Points z: (21000.0, 21026.3)
+2020-11-25 10:37:11,954 - INFO - Fit deviation: [ 0.8496094  -0.8339844   0.78515625 -0.7988281 ]
+2020-11-25 10:37:12,848 - INFO - DDE Connection with Omnic was Terminated
+2020-11-25 10:53:58,551 - INFO - Connection With Omnic Established
+2020-11-25 10:53:58,590 - INFO - switching to mode: MeasureModes.PARTICLE_DETECTION
+2020-11-25 10:56:05,069 - INFO - Connection With Omnic Established
+2020-11-25 10:56:05,084 - INFO - switching to mode: MeasureModes.PARTICLE_DETECTION
+2020-11-25 10:56:05,129 - INFO - switching to mode: MeasureModes.PARTICLE_DETECTION
+2020-11-25 11:00:11,308 - INFO - switching to mode: MeasureModes.SPECTRUM_SCAN
+2020-11-25 11:01:29,945 - INFO - DDE Connection with Omnic was Terminated
+2020-11-25 11:01:30,748 - WARNING - Unsuccessful 1. attempt for COM call of function set_stage_z, Error Type: <class 'dde.error'>
+2020-11-25 11:02:06,983 - INFO - Connection With Omnic Established
+2020-11-25 11:02:07,137 - INFO - switching to mode: MeasureModes.SPECTRUM_SCAN
+2020-11-25 11:02:07,377 - INFO - switching to mode: MeasureModes.SPECTRUM_SCAN
+2020-11-25 11:02:28,280 - INFO - DDE Connection with Omnic was Terminated
+2020-11-25 13:03:10,182 - INFO - Connection With Omnic Established
+2020-11-25 13:03:10,197 - INFO - switching to mode: MeasureModes.SPECTRUM_SCAN
+2020-11-25 13:06:07,324 - INFO - DDE Connection with Omnic was Terminated

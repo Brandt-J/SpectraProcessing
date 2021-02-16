@@ -14,7 +14,8 @@ if TYPE_CHECKING:
 def testEvaluationOnSpectra(spectra: np.ndarray, assignments: List[str], database: 'Database', 
                             classifier: 'RandomDecisionForest', preprocessSpecs: bool,
                             corrModes: List['CorrelationMode'] = [CorrelationMode.PEARSON],
-                            numIterations: int = 5, plotSpectra: bool = False) -> Tuple[plt.Figure, List[List[float]]]:
+                            dbCutoff: float = 0.5, numIterations: int = 5,
+                            plotSpectra: bool = False) -> Tuple[plt.Figure, List[List[float]]]:
     """
 
     :param spectra: (NxM) shape array of M-1 spectra with N wavenumbers (wavenumbers in first column)
@@ -25,12 +26,16 @@ def testEvaluationOnSpectra(spectra: np.ndarray, assignments: List[str], databas
     :param corrModes: List of correlation Modes to test
     :param numIterations: Number of Iterations to perform
     :param plotSpectra: Whether or not to plot random spectra of every even iteration.
+    :param dbCutoff: Cutoff (0.0 -> 1.0) for db correlation. Correlations lower than that are considered "unknown"
     :return:
     """
-    totalQualities: List[List[float]] = []
+    totalPrecisions: List[List[float]] = []
+    totalRecalls: List[List[float]] = []
     for _ in range(len(corrModes)):
-        totalQualities.append([])
-    totalQualities.append([])
+        totalPrecisions.append([])
+        totalRecalls.append([])
+    totalPrecisions.append([])
+    totalRecalls.append([])
 
     specPlotIndices = np.random.randint(spectra.shape[1]-1, size=5)
     seed = 0
@@ -54,28 +59,35 @@ def testEvaluationOnSpectra(spectra: np.ndarray, assignments: List[str], databas
 
         for ind, mode in enumerate(corrModes):
             t0 = time.time()
-            dbResults = correlate_spectra(spectra, database, mode, preprocessSpecs)
-            resultQualityDB, dbResultDict = compareResultLists(assignments, dbResults)
-            totalQualities[ind].append(resultQualityDB)
-            print(f'Spec correlation with {mode} took {round(time.time()-t0, 2)} seconds, {round(resultQualityDB)} % correct hits')
+            dbResults = correlate_spectra(spectra, database, mode, cutoff=dbCutoff, preproc=preprocessSpecs)
+            precDB, recallDB = compareResultLists(assignments, dbResults)
+            totalPrecisions[ind].append(precDB)
+            totalRecalls[ind].append(recallDB)
+            print(f'Spec correlation with {mode} took {round(time.time()-t0, 2)} seconds, {round(precDB)} % correct hits')
 
         t0 = time.time()
         descriptorResults = classifier.evaluateSpectra(spectra)
-        resultQualityDesc, descResultDict = compareResultLists(assignments, descriptorResults)
-        print(f'Spectra Descriptor Application took {round(time.time()-t0, 2)} seconds, {round(resultQualityDesc)} % correct hits')
-        totalQualities[ind+1].append(resultQualityDesc)
+        precRDF, recallRDF = compareResultLists(assignments, descriptorResults)
+        print(f'Spectra Descriptor Application took {round(time.time()-t0, 2)} seconds, {round(precRDF)} % correct hits')
+        totalPrecisions[ind+1].append(precRDF)
+        totalRecalls[ind + 1].append(recallRDF)
 
-    resultFig = plt.figure()
-    ax = resultFig.add_subplot()
-    for ind, results in enumerate(totalQualities):
+    resultFig: plt.Figure = plt.figure(figsize=(12, 5))
+    ax1: plt.Axes = resultFig.add_subplot(121)
+    ax2: plt.Axes = resultFig.add_subplot(122)
+    for ind, (precisions, recalls) in enumerate(zip(totalPrecisions, totalRecalls)):
         if ind < len(corrModes):
             label = f'database matching, {corrModes[ind]}'
         else:
             label = 'RDF Spec descLib'
-        ax.plot(np.arange(len(results))+1, results, label=label)
+        ax1.plot(np.arange(len(precisions))+1, precisions, label=label)
+        ax2.plot(np.arange(len(recalls))+1, recalls, label=label)
 
-    ax.set_xlabel('-- Decreasing spectra quality -->', fontsize=15)
-    ax.set_ylabel('Hit Quality (%)', fontsize=15)
-    ax.set_ylim(0, 100)
-    ax.legend(fontsize=10)
-    return resultFig, totalQualities
+    ax1.set_ylabel('Precision (%)', fontsize=15)
+    ax2.set_ylabel('Recall (%)', fontsize=15)
+    for ax in [ax1, ax2]:
+        ax.set_xlabel('-- Decreasing spectra quality -->', fontsize=15)
+        ax.set_ylim(0, 100)
+        ax.legend(fontsize=10)
+    resultFig.tight_layout()
+    return resultFig, totalPrecisions

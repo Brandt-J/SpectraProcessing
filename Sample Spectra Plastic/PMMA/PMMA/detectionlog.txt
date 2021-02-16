@@ -1,0 +1,827 @@
+2020-11-25 10:57:02,565 - DEBUG - grayscale conversion
+2020-11-25 10:57:02,565 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:02,567 - DEBUG - contrast curve
+2020-11-25 10:57:02,592 - DEBUG - blur
+2020-11-25 10:57:02,592 - DEBUG - lower threshold
+2020-11-25 10:57:02,601 - INFO - thresholded
+2020-11-25 10:57:02,850 - INFO - particle detection took: 0.28467321395874023 seconds
+2020-11-25 10:57:17,092 - DEBUG - grayscale conversion
+2020-11-25 10:57:17,092 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:17,094 - DEBUG - contrast curve
+2020-11-25 10:57:17,118 - DEBUG - blur
+2020-11-25 10:57:17,121 - DEBUG - lower threshold
+2020-11-25 10:57:17,129 - INFO - thresholded
+2020-11-25 10:57:17,368 - INFO - particle detection took: 0.27725887298583984 seconds
+2020-11-25 10:57:17,531 - DEBUG - grayscale conversion
+2020-11-25 10:57:17,532 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:17,539 - DEBUG - contrast curve
+2020-11-25 10:57:17,577 - DEBUG - blur
+2020-11-25 10:57:17,577 - DEBUG - lower threshold
+2020-11-25 10:57:17,586 - INFO - thresholded
+2020-11-25 10:57:17,822 - INFO - particle detection took: 0.2932009696960449 seconds
+2020-11-25 10:57:19,996 - DEBUG - grayscale conversion
+2020-11-25 10:57:19,997 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:19,999 - DEBUG - contrast curve
+2020-11-25 10:57:20,023 - DEBUG - blur
+2020-11-25 10:57:20,023 - DEBUG - lower threshold
+2020-11-25 10:57:20,032 - INFO - thresholded
+2020-11-25 10:57:20,327 - INFO - particle detection took: 0.3310863971710205 seconds
+2020-11-25 10:57:20,346 - DEBUG - grayscale conversion
+2020-11-25 10:57:20,346 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:20,348 - DEBUG - contrast curve
+2020-11-25 10:57:20,373 - DEBUG - blur
+2020-11-25 10:57:20,373 - DEBUG - lower threshold
+2020-11-25 10:57:20,381 - INFO - thresholded
+2020-11-25 10:57:20,611 - INFO - particle detection took: 0.26428914070129395 seconds
+2020-11-25 10:57:22,107 - DEBUG - grayscale conversion
+2020-11-25 10:57:22,108 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:22,110 - DEBUG - contrast curve
+2020-11-25 10:57:22,134 - DEBUG - blur
+2020-11-25 10:57:22,134 - DEBUG - lower threshold
+2020-11-25 10:57:22,143 - INFO - thresholded
+2020-11-25 10:57:22,365 - INFO - particle detection took: 0.2591888904571533 seconds
+2020-11-25 10:57:23,018 - DEBUG - grayscale conversion
+2020-11-25 10:57:23,019 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:23,022 - DEBUG - contrast curve
+2020-11-25 10:57:23,043 - DEBUG - blur
+2020-11-25 10:57:23,043 - DEBUG - lower threshold
+2020-11-25 10:57:23,050 - INFO - thresholded
+2020-11-25 10:57:23,215 - INFO - particle detection took: 0.1965012550354004 seconds
+2020-11-25 10:57:23,718 - DEBUG - grayscale conversion
+2020-11-25 10:57:23,718 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:23,720 - DEBUG - contrast curve
+2020-11-25 10:57:23,742 - DEBUG - blur
+2020-11-25 10:57:23,743 - DEBUG - lower threshold
+2020-11-25 10:57:23,749 - INFO - thresholded
+2020-11-25 10:57:23,915 - INFO - particle detection took: 0.19765067100524902 seconds
+2020-11-25 10:57:24,473 - DEBUG - grayscale conversion
+2020-11-25 10:57:24,473 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:24,475 - DEBUG - contrast curve
+2020-11-25 10:57:24,500 - DEBUG - blur
+2020-11-25 10:57:24,500 - DEBUG - lower threshold
+2020-11-25 10:57:24,508 - INFO - thresholded
+2020-11-25 10:57:24,751 - INFO - particle detection took: 0.28025221824645996 seconds
+2020-11-25 10:57:35,512 - DEBUG - grayscale conversion
+2020-11-25 10:57:35,512 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:35,514 - DEBUG - contrast curve
+2020-11-25 10:57:37,751 - DEBUG - grayscale conversion
+2020-11-25 10:57:37,752 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:37,755 - DEBUG - contrast curve
+2020-11-25 10:57:37,788 - DEBUG - blur
+2020-11-25 10:57:37,788 - DEBUG - lower threshold
+2020-11-25 10:57:37,797 - INFO - thresholded
+2020-11-25 10:57:38,092 - INFO - particle detection took: 0.34108710289001465 seconds
+2020-11-25 10:57:39,808 - DEBUG - grayscale conversion
+2020-11-25 10:57:39,809 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:39,811 - DEBUG - contrast curve
+2020-11-25 10:57:41,535 - DEBUG - grayscale conversion
+2020-11-25 10:57:41,536 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:41,539 - DEBUG - contrast curve
+2020-11-25 10:57:43,111 - DEBUG - grayscale conversion
+2020-11-25 10:57:43,112 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:43,115 - DEBUG - contrast curve
+2020-11-25 10:57:43,140 - DEBUG - blur
+2020-11-25 10:57:44,355 - DEBUG - grayscale conversion
+2020-11-25 10:57:44,355 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:44,357 - DEBUG - contrast curve
+2020-11-25 10:57:44,383 - DEBUG - blur
+2020-11-25 10:57:44,383 - DEBUG - lower threshold
+2020-11-25 10:57:44,392 - INFO - thresholded
+2020-11-25 10:57:44,684 - INFO - particle detection took: 0.33011674880981445 seconds
+2020-11-25 10:57:44,702 - DEBUG - grayscale conversion
+2020-11-25 10:57:44,703 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:44,705 - DEBUG - contrast curve
+2020-11-25 10:57:44,731 - DEBUG - blur
+2020-11-25 10:57:44,731 - DEBUG - lower threshold
+2020-11-25 10:57:44,739 - INFO - thresholded
+2020-11-25 10:57:45,059 - INFO - particle detection took: 0.35806989669799805 seconds
+2020-11-25 10:57:45,078 - DEBUG - grayscale conversion
+2020-11-25 10:57:45,079 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:45,081 - DEBUG - contrast curve
+2020-11-25 10:57:45,107 - DEBUG - blur
+2020-11-25 10:57:45,108 - DEBUG - lower threshold
+2020-11-25 10:57:45,116 - INFO - thresholded
+2020-11-25 10:57:45,426 - INFO - particle detection took: 0.351060152053833 seconds
+2020-11-25 10:57:45,445 - DEBUG - grayscale conversion
+2020-11-25 10:57:45,446 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:45,448 - DEBUG - contrast curve
+2020-11-25 10:57:45,474 - DEBUG - blur
+2020-11-25 10:57:45,475 - DEBUG - lower threshold
+2020-11-25 10:57:45,483 - INFO - thresholded
+2020-11-25 10:57:45,795 - INFO - particle detection took: 0.3500645160675049 seconds
+2020-11-25 10:57:45,813 - DEBUG - grayscale conversion
+2020-11-25 10:57:45,814 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:45,816 - DEBUG - contrast curve
+2020-11-25 10:57:45,842 - DEBUG - blur
+2020-11-25 10:57:45,842 - DEBUG - lower threshold
+2020-11-25 10:57:45,850 - INFO - thresholded
+2020-11-25 10:57:46,150 - INFO - particle detection took: 0.3400883674621582 seconds
+2020-11-25 10:57:46,167 - DEBUG - grayscale conversion
+2020-11-25 10:57:46,168 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:46,170 - DEBUG - contrast curve
+2020-11-25 10:57:46,196 - DEBUG - blur
+2020-11-25 10:57:46,196 - DEBUG - lower threshold
+2020-11-25 10:57:46,204 - INFO - thresholded
+2020-11-25 10:57:46,498 - INFO - particle detection took: 0.33310890197753906 seconds
+2020-11-25 10:57:46,514 - DEBUG - grayscale conversion
+2020-11-25 10:57:46,515 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:46,517 - DEBUG - contrast curve
+2020-11-25 10:57:46,542 - DEBUG - blur
+2020-11-25 10:57:46,543 - DEBUG - lower threshold
+2020-11-25 10:57:46,550 - INFO - thresholded
+2020-11-25 10:57:46,856 - INFO - particle detection took: 0.34308314323425293 seconds
+2020-11-25 10:57:48,215 - DEBUG - grayscale conversion
+2020-11-25 10:57:48,216 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:48,219 - DEBUG - contrast curve
+2020-11-25 10:57:48,244 - DEBUG - blur
+2020-11-25 10:57:50,717 - DEBUG - grayscale conversion
+2020-11-25 10:57:50,718 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:50,720 - DEBUG - contrast curve
+2020-11-25 10:57:50,746 - DEBUG - blur
+2020-11-25 10:57:52,511 - DEBUG - grayscale conversion
+2020-11-25 10:57:52,512 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:52,515 - DEBUG - contrast curve
+2020-11-25 10:57:52,540 - DEBUG - blur
+2020-11-25 10:57:57,463 - DEBUG - grayscale conversion
+2020-11-25 10:57:57,463 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:57,466 - DEBUG - contrast curve
+2020-11-25 10:57:58,679 - DEBUG - grayscale conversion
+2020-11-25 10:57:58,680 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:57:58,683 - DEBUG - contrast curve
+2020-11-25 10:57:58,706 - DEBUG - blur
+2020-11-25 10:58:03,055 - DEBUG - grayscale conversion
+2020-11-25 10:58:03,056 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:03,059 - DEBUG - contrast curve
+2020-11-25 10:58:04,231 - DEBUG - grayscale conversion
+2020-11-25 10:58:04,232 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:04,234 - DEBUG - contrast curve
+2020-11-25 10:58:04,257 - DEBUG - blur
+2020-11-25 10:58:12,711 - DEBUG - grayscale conversion
+2020-11-25 10:58:12,712 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:12,714 - DEBUG - contrast curve
+2020-11-25 10:58:14,727 - DEBUG - grayscale conversion
+2020-11-25 10:58:14,727 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:14,730 - DEBUG - contrast curve
+2020-11-25 10:58:14,754 - DEBUG - blur
+2020-11-25 10:58:20,202 - DEBUG - grayscale conversion
+2020-11-25 10:58:20,202 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:20,205 - DEBUG - contrast curve
+2020-11-25 10:58:20,229 - DEBUG - blur
+2020-11-25 10:58:20,229 - DEBUG - lower threshold
+2020-11-25 10:58:20,236 - INFO - thresholded
+2020-11-25 10:58:20,434 - INFO - particle detection took: 0.23238253593444824 seconds
+2020-11-25 10:58:20,453 - DEBUG - grayscale conversion
+2020-11-25 10:58:20,454 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:20,456 - DEBUG - contrast curve
+2020-11-25 10:58:20,481 - DEBUG - blur
+2020-11-25 10:58:20,481 - DEBUG - lower threshold
+2020-11-25 10:58:20,489 - INFO - thresholded
+2020-11-25 10:58:20,685 - INFO - particle detection took: 0.2324073314666748 seconds
+2020-11-25 10:58:21,247 - DEBUG - grayscale conversion
+2020-11-25 10:58:21,248 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:21,251 - DEBUG - contrast curve
+2020-11-25 10:58:21,275 - DEBUG - blur
+2020-11-25 10:58:21,275 - DEBUG - lower threshold
+2020-11-25 10:58:21,282 - INFO - thresholded
+2020-11-25 10:58:21,475 - INFO - particle detection took: 0.22739171981811523 seconds
+2020-11-25 10:58:21,491 - DEBUG - grayscale conversion
+2020-11-25 10:58:21,492 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:21,494 - DEBUG - contrast curve
+2020-11-25 10:58:21,519 - DEBUG - blur
+2020-11-25 10:58:21,519 - DEBUG - lower threshold
+2020-11-25 10:58:21,526 - INFO - thresholded
+2020-11-25 10:58:21,720 - INFO - particle detection took: 0.2293868064880371 seconds
+2020-11-25 10:58:24,194 - DEBUG - grayscale conversion
+2020-11-25 10:58:24,195 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:24,197 - DEBUG - contrast curve
+2020-11-25 10:58:24,222 - DEBUG - blur
+2020-11-25 10:58:24,222 - DEBUG - lower threshold
+2020-11-25 10:58:24,230 - INFO - thresholded
+2020-11-25 10:58:24,450 - INFO - particle detection took: 0.2573099136352539 seconds
+2020-11-25 10:58:25,167 - DEBUG - grayscale conversion
+2020-11-25 10:58:25,167 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:25,170 - DEBUG - contrast curve
+2020-11-25 10:58:25,197 - DEBUG - blur
+2020-11-25 10:58:25,197 - DEBUG - lower threshold
+2020-11-25 10:58:25,204 - INFO - thresholded
+2020-11-25 10:58:25,413 - INFO - particle detection took: 0.24634218215942383 seconds
+2020-11-25 10:58:26,351 - DEBUG - grayscale conversion
+2020-11-25 10:58:26,352 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:26,354 - DEBUG - contrast curve
+2020-11-25 10:58:26,379 - DEBUG - blur
+2020-11-25 10:58:26,379 - DEBUG - lower threshold
+2020-11-25 10:58:26,386 - INFO - thresholded
+2020-11-25 10:58:26,588 - INFO - particle detection took: 0.23836207389831543 seconds
+2020-11-25 10:58:27,399 - DEBUG - grayscale conversion
+2020-11-25 10:58:27,400 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:27,403 - DEBUG - contrast curve
+2020-11-25 10:58:27,432 - DEBUG - blur
+2020-11-25 10:58:27,433 - DEBUG - lower threshold
+2020-11-25 10:58:27,440 - INFO - thresholded
+2020-11-25 10:58:27,634 - INFO - particle detection took: 0.23637127876281738 seconds
+2020-11-25 10:58:31,575 - DEBUG - grayscale conversion
+2020-11-25 10:58:31,576 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:31,578 - DEBUG - contrast curve
+2020-11-25 10:58:31,603 - DEBUG - blur
+2020-11-25 10:58:31,603 - DEBUG - lower threshold
+2020-11-25 10:58:31,610 - INFO - thresholded
+2020-11-25 10:58:31,658 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:31,727 - DEBUG - reduced 21 to 2 maxima
+2020-11-25 10:58:31,831 - INFO - particle detection took: 0.2573115825653076 seconds
+2020-11-25 10:58:33,158 - DEBUG - grayscale conversion
+2020-11-25 10:58:33,159 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:33,161 - DEBUG - contrast curve
+2020-11-25 10:58:33,186 - DEBUG - blur
+2020-11-25 10:58:33,186 - DEBUG - lower threshold
+2020-11-25 10:58:33,193 - INFO - thresholded
+2020-11-25 10:58:33,319 - DEBUG - reduced 18 to 2 maxima
+2020-11-25 10:58:33,400 - INFO - particle detection took: 0.24135828018188477 seconds
+2020-11-25 10:58:34,248 - DEBUG - grayscale conversion
+2020-11-25 10:58:34,248 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:34,250 - DEBUG - contrast curve
+2020-11-25 10:58:34,275 - DEBUG - blur
+2020-11-25 10:58:34,275 - DEBUG - lower threshold
+2020-11-25 10:58:34,281 - INFO - thresholded
+2020-11-25 10:58:34,316 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:34,343 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:34,420 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:34,472 - INFO - particle detection took: 0.22539234161376953 seconds
+2020-11-25 10:58:35,222 - DEBUG - grayscale conversion
+2020-11-25 10:58:35,224 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:35,227 - DEBUG - contrast curve
+2020-11-25 10:58:35,254 - DEBUG - blur
+2020-11-25 10:58:35,255 - DEBUG - lower threshold
+2020-11-25 10:58:35,262 - INFO - thresholded
+2020-11-25 10:58:35,268 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:35,353 - DEBUG - reduced 20 to 2 maxima
+2020-11-25 10:58:35,491 - INFO - particle detection took: 0.2682530879974365 seconds
+2020-11-25 10:58:36,167 - DEBUG - grayscale conversion
+2020-11-25 10:58:36,168 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:36,171 - DEBUG - contrast curve
+2020-11-25 10:58:36,199 - DEBUG - blur
+2020-11-25 10:58:36,199 - DEBUG - lower threshold
+2020-11-25 10:58:36,206 - INFO - thresholded
+2020-11-25 10:58:36,224 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:36,298 - DEBUG - reduced 15 to 2 maxima
+2020-11-25 10:58:36,402 - INFO - particle detection took: 0.23639583587646484 seconds
+2020-11-25 10:58:37,097 - DEBUG - grayscale conversion
+2020-11-25 10:58:37,098 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:37,100 - DEBUG - contrast curve
+2020-11-25 10:58:37,125 - DEBUG - blur
+2020-11-25 10:58:37,125 - DEBUG - lower threshold
+2020-11-25 10:58:37,133 - INFO - thresholded
+2020-11-25 10:58:37,237 - DEBUG - reduced 20 to 2 maxima
+2020-11-25 10:58:37,374 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:37,382 - INFO - particle detection took: 0.28523755073547363 seconds
+2020-11-25 10:58:38,415 - DEBUG - grayscale conversion
+2020-11-25 10:58:38,416 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:38,418 - DEBUG - contrast curve
+2020-11-25 10:58:38,443 - DEBUG - blur
+2020-11-25 10:58:38,443 - DEBUG - lower threshold
+2020-11-25 10:58:38,451 - INFO - thresholded
+2020-11-25 10:58:38,535 - DEBUG - reduced 24 to 2 maxima
+2020-11-25 10:58:38,702 - INFO - particle detection took: 0.2872314453125 seconds
+2020-11-25 10:58:39,172 - DEBUG - grayscale conversion
+2020-11-25 10:58:39,173 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:39,175 - DEBUG - contrast curve
+2020-11-25 10:58:39,198 - DEBUG - blur
+2020-11-25 10:58:39,199 - DEBUG - lower threshold
+2020-11-25 10:58:39,205 - INFO - thresholded
+2020-11-25 10:58:39,223 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:39,286 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:39,341 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:39,361 - INFO - particle detection took: 0.19051480293273926 seconds
+2020-11-25 10:58:47,355 - DEBUG - grayscale conversion
+2020-11-25 10:58:47,356 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:47,358 - DEBUG - contrast curve
+2020-11-25 10:58:47,381 - DEBUG - blur
+2020-11-25 10:58:47,382 - DEBUG - lower threshold
+2020-11-25 10:58:47,387 - INFO - thresholded
+2020-11-25 10:58:47,400 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:47,463 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:47,515 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:47,535 - INFO - particle detection took: 0.18052291870117188 seconds
+2020-11-25 10:58:48,234 - DEBUG - grayscale conversion
+2020-11-25 10:58:48,235 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:48,237 - DEBUG - contrast curve
+2020-11-25 10:58:48,260 - DEBUG - blur
+2020-11-25 10:58:48,261 - DEBUG - lower threshold
+2020-11-25 10:58:48,266 - INFO - thresholded
+2020-11-25 10:58:48,277 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:48,344 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:48,397 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:48,415 - INFO - particle detection took: 0.18151569366455078 seconds
+2020-11-25 10:58:48,849 - DEBUG - grayscale conversion
+2020-11-25 10:58:48,850 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:48,852 - DEBUG - contrast curve
+2020-11-25 10:58:48,875 - DEBUG - blur
+2020-11-25 10:58:48,875 - DEBUG - lower threshold
+2020-11-25 10:58:48,881 - INFO - thresholded
+2020-11-25 10:58:48,948 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:49,001 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:49,020 - INFO - particle detection took: 0.17353534698486328 seconds
+2020-11-25 10:58:49,385 - DEBUG - grayscale conversion
+2020-11-25 10:58:49,386 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:49,391 - DEBUG - contrast curve
+2020-11-25 10:58:49,426 - DEBUG - blur
+2020-11-25 10:58:49,426 - DEBUG - lower threshold
+2020-11-25 10:58:49,432 - INFO - thresholded
+2020-11-25 10:58:49,500 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:49,565 - INFO - particle detection took: 0.1825423240661621 seconds
+2020-11-25 10:58:49,742 - DEBUG - grayscale conversion
+2020-11-25 10:58:49,743 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:49,745 - DEBUG - contrast curve
+2020-11-25 10:58:49,769 - DEBUG - blur
+2020-11-25 10:58:49,769 - DEBUG - lower threshold
+2020-11-25 10:58:49,774 - INFO - thresholded
+2020-11-25 10:58:49,837 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:49,886 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:49,904 - INFO - particle detection took: 0.16355013847351074 seconds
+2020-11-25 10:58:49,915 - DEBUG - grayscale conversion
+2020-11-25 10:58:49,916 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:49,918 - DEBUG - contrast curve
+2020-11-25 10:58:49,941 - DEBUG - blur
+2020-11-25 10:58:49,941 - DEBUG - lower threshold
+2020-11-25 10:58:49,947 - INFO - thresholded
+2020-11-25 10:58:50,023 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:50,072 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:50,089 - INFO - particle detection took: 0.1745319366455078 seconds
+2020-11-25 10:58:50,100 - DEBUG - grayscale conversion
+2020-11-25 10:58:50,101 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:50,103 - DEBUG - contrast curve
+2020-11-25 10:58:50,126 - DEBUG - blur
+2020-11-25 10:58:50,127 - DEBUG - lower threshold
+2020-11-25 10:58:50,132 - INFO - thresholded
+2020-11-25 10:58:50,204 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:50,249 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:50,266 - INFO - particle detection took: 0.16655564308166504 seconds
+2020-11-25 10:58:50,278 - DEBUG - grayscale conversion
+2020-11-25 10:58:50,278 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:50,280 - DEBUG - contrast curve
+2020-11-25 10:58:50,303 - DEBUG - blur
+2020-11-25 10:58:50,304 - DEBUG - lower threshold
+2020-11-25 10:58:50,309 - INFO - thresholded
+2020-11-25 10:58:50,377 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:50,438 - INFO - particle detection took: 0.1605701446533203 seconds
+2020-11-25 10:58:50,449 - DEBUG - grayscale conversion
+2020-11-25 10:58:50,450 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:50,452 - DEBUG - contrast curve
+2020-11-25 10:58:50,476 - DEBUG - blur
+2020-11-25 10:58:50,476 - DEBUG - lower threshold
+2020-11-25 10:58:50,481 - INFO - thresholded
+2020-11-25 10:58:50,556 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:50,600 - INFO - particle detection took: 0.15060019493103027 seconds
+2020-11-25 10:58:50,611 - DEBUG - grayscale conversion
+2020-11-25 10:58:50,612 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:50,614 - DEBUG - contrast curve
+2020-11-25 10:58:50,637 - DEBUG - blur
+2020-11-25 10:58:50,637 - DEBUG - lower threshold
+2020-11-25 10:58:50,642 - INFO - thresholded
+2020-11-25 10:58:50,714 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:50,757 - INFO - particle detection took: 0.14760494232177734 seconds
+2020-11-25 10:58:50,768 - DEBUG - grayscale conversion
+2020-11-25 10:58:50,769 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:50,771 - DEBUG - contrast curve
+2020-11-25 10:58:50,794 - DEBUG - blur
+2020-11-25 10:58:50,794 - DEBUG - lower threshold
+2020-11-25 10:58:50,799 - INFO - thresholded
+2020-11-25 10:58:50,870 - DEBUG - reduced 5 to 4 maxima
+2020-11-25 10:58:50,918 - INFO - particle detection took: 0.15059781074523926 seconds
+2020-11-25 10:58:52,104 - DEBUG - grayscale conversion
+2020-11-25 10:58:52,105 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:52,109 - DEBUG - contrast curve
+2020-11-25 10:58:52,143 - DEBUG - blur
+2020-11-25 10:58:52,143 - DEBUG - lower threshold
+2020-11-25 10:58:52,148 - INFO - thresholded
+2020-11-25 10:58:52,220 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:52,263 - INFO - particle detection took: 0.15960264205932617 seconds
+2020-11-25 10:58:52,386 - DEBUG - grayscale conversion
+2020-11-25 10:58:52,386 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:52,389 - DEBUG - contrast curve
+2020-11-25 10:58:52,411 - DEBUG - blur
+2020-11-25 10:58:52,411 - DEBUG - lower threshold
+2020-11-25 10:58:52,416 - INFO - thresholded
+2020-11-25 10:58:52,489 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:52,532 - INFO - particle detection took: 0.14760613441467285 seconds
+2020-11-25 10:58:52,543 - DEBUG - grayscale conversion
+2020-11-25 10:58:52,543 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:52,545 - DEBUG - contrast curve
+2020-11-25 10:58:52,569 - DEBUG - blur
+2020-11-25 10:58:52,569 - DEBUG - lower threshold
+2020-11-25 10:58:52,574 - INFO - thresholded
+2020-11-25 10:58:52,644 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:52,704 - INFO - particle detection took: 0.16159725189208984 seconds
+2020-11-25 10:58:52,716 - DEBUG - grayscale conversion
+2020-11-25 10:58:52,716 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:52,719 - DEBUG - contrast curve
+2020-11-25 10:58:52,742 - DEBUG - blur
+2020-11-25 10:58:52,742 - DEBUG - lower threshold
+2020-11-25 10:58:52,747 - INFO - thresholded
+2020-11-25 10:58:52,815 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:52,863 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:52,881 - INFO - particle detection took: 0.1655285358428955 seconds
+2020-11-25 10:58:52,892 - DEBUG - grayscale conversion
+2020-11-25 10:58:52,893 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:52,895 - DEBUG - contrast curve
+2020-11-25 10:58:52,918 - DEBUG - blur
+2020-11-25 10:58:52,918 - DEBUG - lower threshold
+2020-11-25 10:58:52,923 - INFO - thresholded
+2020-11-25 10:58:52,996 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:53,044 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:53,061 - INFO - particle detection took: 0.1695399284362793 seconds
+2020-11-25 10:58:53,073 - DEBUG - grayscale conversion
+2020-11-25 10:58:53,073 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:53,075 - DEBUG - contrast curve
+2020-11-25 10:58:53,099 - DEBUG - blur
+2020-11-25 10:58:53,099 - DEBUG - lower threshold
+2020-11-25 10:58:53,104 - INFO - thresholded
+2020-11-25 10:58:53,168 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:53,218 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:58:53,236 - INFO - particle detection took: 0.16456007957458496 seconds
+2020-11-25 10:58:53,248 - DEBUG - grayscale conversion
+2020-11-25 10:58:53,249 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:53,251 - DEBUG - contrast curve
+2020-11-25 10:58:53,274 - DEBUG - blur
+2020-11-25 10:58:53,275 - DEBUG - lower threshold
+2020-11-25 10:58:53,280 - INFO - thresholded
+2020-11-25 10:58:53,349 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:53,414 - INFO - particle detection took: 0.16655206680297852 seconds
+2020-11-25 10:58:53,426 - DEBUG - grayscale conversion
+2020-11-25 10:58:53,426 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:53,428 - DEBUG - contrast curve
+2020-11-25 10:58:53,452 - DEBUG - blur
+2020-11-25 10:58:53,452 - DEBUG - lower threshold
+2020-11-25 10:58:53,457 - INFO - thresholded
+2020-11-25 10:58:53,526 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:53,584 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:53,603 - INFO - particle detection took: 0.17855048179626465 seconds
+2020-11-25 10:58:53,614 - DEBUG - grayscale conversion
+2020-11-25 10:58:53,615 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:53,617 - DEBUG - contrast curve
+2020-11-25 10:58:53,640 - DEBUG - blur
+2020-11-25 10:58:53,641 - DEBUG - lower threshold
+2020-11-25 10:58:53,646 - INFO - thresholded
+2020-11-25 10:58:53,656 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:53,722 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:53,777 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:53,795 - INFO - particle detection took: 0.18250346183776855 seconds
+2020-11-25 10:58:53,808 - DEBUG - grayscale conversion
+2020-11-25 10:58:53,808 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:53,810 - DEBUG - contrast curve
+2020-11-25 10:58:53,833 - DEBUG - blur
+2020-11-25 10:58:53,834 - DEBUG - lower threshold
+2020-11-25 10:58:53,839 - INFO - thresholded
+2020-11-25 10:58:53,851 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:53,914 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:53,967 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:53,988 - INFO - particle detection took: 0.18151426315307617 seconds
+2020-11-25 10:58:53,999 - DEBUG - grayscale conversion
+2020-11-25 10:58:54,000 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:54,002 - DEBUG - contrast curve
+2020-11-25 10:58:54,025 - DEBUG - blur
+2020-11-25 10:58:54,026 - DEBUG - lower threshold
+2020-11-25 10:58:54,031 - INFO - thresholded
+2020-11-25 10:58:54,051 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:54,112 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:54,168 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:54,189 - INFO - particle detection took: 0.19169926643371582 seconds
+2020-11-25 10:58:54,201 - DEBUG - grayscale conversion
+2020-11-25 10:58:54,201 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:54,203 - DEBUG - contrast curve
+2020-11-25 10:58:54,227 - DEBUG - blur
+2020-11-25 10:58:54,227 - DEBUG - lower threshold
+2020-11-25 10:58:54,233 - INFO - thresholded
+2020-11-25 10:58:54,258 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:54,323 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:54,378 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:54,401 - INFO - particle detection took: 0.2008528709411621 seconds
+2020-11-25 10:58:54,413 - DEBUG - grayscale conversion
+2020-11-25 10:58:54,414 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:54,416 - DEBUG - contrast curve
+2020-11-25 10:58:54,439 - DEBUG - blur
+2020-11-25 10:58:54,440 - DEBUG - lower threshold
+2020-11-25 10:58:54,445 - INFO - thresholded
+2020-11-25 10:58:54,477 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:54,539 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:54,593 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:54,621 - INFO - particle detection took: 0.21143460273742676 seconds
+2020-11-25 10:58:54,633 - DEBUG - grayscale conversion
+2020-11-25 10:58:54,634 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:54,636 - DEBUG - contrast curve
+2020-11-25 10:58:54,659 - DEBUG - blur
+2020-11-25 10:58:54,660 - DEBUG - lower threshold
+2020-11-25 10:58:54,666 - INFO - thresholded
+2020-11-25 10:58:54,696 - DEBUG - reduced 11 to 2 maxima
+2020-11-25 10:58:54,768 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:54,830 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:54,859 - INFO - particle detection took: 0.22838926315307617 seconds
+2020-11-25 10:58:54,871 - DEBUG - grayscale conversion
+2020-11-25 10:58:54,871 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:54,873 - DEBUG - contrast curve
+2020-11-25 10:58:54,897 - DEBUG - blur
+2020-11-25 10:58:54,897 - DEBUG - lower threshold
+2020-11-25 10:58:54,904 - INFO - thresholded
+2020-11-25 10:58:54,919 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:54,991 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:55,054 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:55,081 - INFO - particle detection took: 0.21043729782104492 seconds
+2020-11-25 10:58:55,093 - DEBUG - grayscale conversion
+2020-11-25 10:58:55,094 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:55,096 - DEBUG - contrast curve
+2020-11-25 10:58:55,119 - DEBUG - blur
+2020-11-25 10:58:55,119 - DEBUG - lower threshold
+2020-11-25 10:58:55,125 - INFO - thresholded
+2020-11-25 10:58:55,141 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:55,218 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:55,280 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:55,311 - INFO - particle detection took: 0.22054553031921387 seconds
+2020-11-25 10:58:55,323 - DEBUG - grayscale conversion
+2020-11-25 10:58:55,324 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:55,326 - DEBUG - contrast curve
+2020-11-25 10:58:55,350 - DEBUG - blur
+2020-11-25 10:58:55,350 - DEBUG - lower threshold
+2020-11-25 10:58:55,356 - INFO - thresholded
+2020-11-25 10:58:55,373 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:55,451 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:55,521 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:55,553 - INFO - particle detection took: 0.23141002655029297 seconds
+2020-11-25 10:58:55,566 - DEBUG - grayscale conversion
+2020-11-25 10:58:55,567 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:55,569 - DEBUG - contrast curve
+2020-11-25 10:58:55,593 - DEBUG - blur
+2020-11-25 10:58:55,593 - DEBUG - lower threshold
+2020-11-25 10:58:55,600 - INFO - thresholded
+2020-11-25 10:58:55,614 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:55,687 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:55,756 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:55,788 - INFO - particle detection took: 0.2234022617340088 seconds
+2020-11-25 10:58:57,090 - DEBUG - grayscale conversion
+2020-11-25 10:58:57,090 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:57,092 - DEBUG - contrast curve
+2020-11-25 10:58:57,116 - DEBUG - blur
+2020-11-25 10:58:57,116 - DEBUG - lower threshold
+2020-11-25 10:58:57,123 - INFO - thresholded
+2020-11-25 10:58:57,140 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:58:57,212 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:57,278 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:58:57,311 - INFO - particle detection took: 0.22138047218322754 seconds
+2020-11-25 10:58:57,323 - DEBUG - grayscale conversion
+2020-11-25 10:58:57,324 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:57,326 - DEBUG - contrast curve
+2020-11-25 10:58:57,350 - DEBUG - blur
+2020-11-25 10:58:57,350 - DEBUG - lower threshold
+2020-11-25 10:58:57,357 - INFO - thresholded
+2020-11-25 10:58:57,369 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:58:57,452 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:57,524 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:58:57,558 - INFO - particle detection took: 0.23636794090270996 seconds
+2020-11-25 10:58:58,575 - DEBUG - grayscale conversion
+2020-11-25 10:58:58,575 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:58,579 - DEBUG - contrast curve
+2020-11-25 10:58:58,607 - DEBUG - blur
+2020-11-25 10:58:58,608 - DEBUG - lower threshold
+2020-11-25 10:58:58,616 - INFO - thresholded
+2020-11-25 10:58:58,736 - DEBUG - reduced 31 to 2 maxima
+2020-11-25 10:58:58,875 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:58:58,946 - INFO - particle detection took: 0.37200307846069336 seconds
+2020-11-25 10:58:59,582 - DEBUG - grayscale conversion
+2020-11-25 10:58:59,583 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:58:59,586 - DEBUG - contrast curve
+2020-11-25 10:58:59,612 - DEBUG - blur
+2020-11-25 10:58:59,613 - DEBUG - lower threshold
+2020-11-25 10:58:59,621 - INFO - thresholded
+2020-11-25 10:58:59,641 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:58:59,755 - DEBUG - reduced 23 to 2 maxima
+2020-11-25 10:58:59,921 - INFO - particle detection took: 0.33809471130371094 seconds
+2020-11-25 10:59:01,642 - DEBUG - grayscale conversion
+2020-11-25 10:59:01,643 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:01,645 - DEBUG - contrast curve
+2020-11-25 10:59:01,669 - DEBUG - blur
+2020-11-25 10:59:01,669 - DEBUG - lower threshold
+2020-11-25 10:59:01,678 - INFO - thresholded
+2020-11-25 10:59:01,693 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:59:01,809 - DEBUG - reduced 23 to 2 maxima
+2020-11-25 10:59:01,975 - INFO - particle detection took: 0.33310985565185547 seconds
+2020-11-25 10:59:01,989 - DEBUG - grayscale conversion
+2020-11-25 10:59:01,989 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:01,991 - DEBUG - contrast curve
+2020-11-25 10:59:02,015 - DEBUG - blur
+2020-11-25 10:59:02,015 - DEBUG - lower threshold
+2020-11-25 10:59:02,024 - INFO - thresholded
+2020-11-25 10:59:02,039 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:02,172 - DEBUG - reduced 27 to 2 maxima
+2020-11-25 10:59:02,333 - INFO - particle detection took: 0.3451073169708252 seconds
+2020-11-25 10:59:02,346 - DEBUG - grayscale conversion
+2020-11-25 10:59:02,347 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:02,349 - DEBUG - contrast curve
+2020-11-25 10:59:02,373 - DEBUG - blur
+2020-11-25 10:59:02,373 - DEBUG - lower threshold
+2020-11-25 10:59:02,380 - INFO - thresholded
+2020-11-25 10:59:02,391 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:02,528 - DEBUG - reduced 23 to 2 maxima
+2020-11-25 10:59:02,648 - INFO - particle detection took: 0.30515551567077637 seconds
+2020-11-25 10:59:02,663 - DEBUG - grayscale conversion
+2020-11-25 10:59:02,664 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:02,666 - DEBUG - contrast curve
+2020-11-25 10:59:02,690 - DEBUG - blur
+2020-11-25 10:59:02,690 - DEBUG - lower threshold
+2020-11-25 10:59:02,698 - INFO - thresholded
+2020-11-25 10:59:02,817 - DEBUG - reduced 22 to 2 maxima
+2020-11-25 10:59:02,952 - INFO - particle detection took: 0.2902238368988037 seconds
+2020-11-25 10:59:02,966 - DEBUG - grayscale conversion
+2020-11-25 10:59:02,966 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:02,969 - DEBUG - contrast curve
+2020-11-25 10:59:02,993 - DEBUG - blur
+2020-11-25 10:59:02,993 - DEBUG - lower threshold
+2020-11-25 10:59:03,001 - INFO - thresholded
+2020-11-25 10:59:03,135 - DEBUG - reduced 25 to 2 maxima
+2020-11-25 10:59:03,267 - INFO - particle detection took: 0.3041870594024658 seconds
+2020-11-25 10:59:03,281 - DEBUG - grayscale conversion
+2020-11-25 10:59:03,282 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:03,284 - DEBUG - contrast curve
+2020-11-25 10:59:03,308 - DEBUG - blur
+2020-11-25 10:59:03,309 - DEBUG - lower threshold
+2020-11-25 10:59:03,316 - INFO - thresholded
+2020-11-25 10:59:03,441 - DEBUG - reduced 23 to 2 maxima
+2020-11-25 10:59:03,571 - INFO - particle detection took: 0.2922189235687256 seconds
+2020-11-25 10:59:03,586 - DEBUG - grayscale conversion
+2020-11-25 10:59:03,586 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:03,588 - DEBUG - contrast curve
+2020-11-25 10:59:03,613 - DEBUG - blur
+2020-11-25 10:59:03,613 - DEBUG - lower threshold
+2020-11-25 10:59:03,620 - INFO - thresholded
+2020-11-25 10:59:03,749 - DEBUG - reduced 22 to 2 maxima
+2020-11-25 10:59:03,875 - INFO - particle detection took: 0.291611909866333 seconds
+2020-11-25 10:59:04,183 - DEBUG - grayscale conversion
+2020-11-25 10:59:04,184 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:04,187 - DEBUG - contrast curve
+2020-11-25 10:59:04,216 - DEBUG - blur
+2020-11-25 10:59:04,216 - DEBUG - lower threshold
+2020-11-25 10:59:04,223 - INFO - thresholded
+2020-11-25 10:59:04,285 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:04,331 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:04,395 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:04,401 - INFO - particle detection took: 0.21937274932861328 seconds
+2020-11-25 10:59:05,480 - DEBUG - grayscale conversion
+2020-11-25 10:59:05,481 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:05,483 - DEBUG - contrast curve
+2020-11-25 10:59:05,507 - DEBUG - blur
+2020-11-25 10:59:05,507 - DEBUG - lower threshold
+2020-11-25 10:59:05,513 - INFO - thresholded
+2020-11-25 10:59:05,558 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:05,588 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:05,626 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:05,657 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:05,679 - INFO - particle detection took: 0.20046615600585938 seconds
+2020-11-25 10:59:07,067 - INFO - Starting particle detection
+2020-11-25 10:59:07,656 - DEBUG - grayscale conversion
+2020-11-25 10:59:07,690 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:07,803 - DEBUG - contrast curve
+2020-11-25 10:59:09,037 - DEBUG - blur
+2020-11-25 10:59:09,042 - DEBUG - lower threshold
+2020-11-25 10:59:09,438 - INFO - thresholded
+2020-11-25 10:59:09,544 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:09,568 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:09,662 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:09,740 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:09,856 - DEBUG - reduced 20 to 2 maxima
+2020-11-25 10:59:09,982 - DEBUG - reduced 13 to 2 maxima
+2020-11-25 10:59:10,142 - DEBUG - reduced 21 to 2 maxima
+2020-11-25 10:59:10,347 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:10,407 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:10,470 - DEBUG - reduced 13 to 2 maxima
+2020-11-25 10:59:10,524 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:10,615 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:10,714 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:10,783 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:10,868 - DEBUG - reduced 11 to 2 maxima
+2020-11-25 10:59:10,987 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:11,046 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:11,152 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:11,204 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:11,244 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:11,297 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:11,336 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:11,376 - DEBUG - reduced 14 to 2 maxima
+2020-11-25 10:59:11,427 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:11,472 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:11,553 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:11,624 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:11,652 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:11,706 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:11,798 - DEBUG - reduced 16 to 2 maxima
+2020-11-25 10:59:11,858 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:11,943 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:12,022 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:12,089 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:12,111 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:12,183 - DEBUG - reduced 12 to 2 maxima
+2020-11-25 10:59:12,349 - DEBUG - reduced 33 to 2 maxima
+2020-11-25 10:59:12,839 - DEBUG - reduced 31 to 2 maxima
+2020-11-25 10:59:13,021 - DEBUG - reduced 4 to 3 maxima
+2020-11-25 10:59:13,150 - DEBUG - reduced 14 to 2 maxima
+2020-11-25 10:59:13,220 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:13,277 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:13,364 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:13,489 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:13,673 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:13,797 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:13,814 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:13,838 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:13,932 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:59:14,061 - DEBUG - reduced 15 to 2 maxima
+2020-11-25 10:59:14,176 - DEBUG - reduced 11 to 2 maxima
+2020-11-25 10:59:14,283 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:14,410 - DEBUG - reduced 23 to 2 maxima
+2020-11-25 10:59:14,673 - DEBUG - reduced 30 to 2 maxima
+2020-11-25 10:59:14,874 - DEBUG - reduced 17 to 2 maxima
+2020-11-25 10:59:15,110 - DEBUG - reduced 27 to 2 maxima
+2020-11-25 10:59:15,358 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:15,486 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:15,529 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:15,595 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:15,693 - DEBUG - reduced 11 to 2 maxima
+2020-11-25 10:59:15,918 - DEBUG - reduced 9 to 2 maxima
+2020-11-25 10:59:16,013 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:16,067 - DEBUG - reduced 16 to 2 maxima
+2020-11-25 10:59:16,649 - DEBUG - reduced 62 to 2 maxima
+2020-11-25 10:59:17,618 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:17,640 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:17,702 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:17,746 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:17,801 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:18,164 - DEBUG - reduced 51 to 2 maxima
+2020-11-25 10:59:18,651 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:18,685 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:18,708 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:18,736 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:18,846 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:18,971 - DEBUG - reduced 14 to 2 maxima
+2020-11-25 10:59:19,166 - DEBUG - reduced 16 to 2 maxima
+2020-11-25 10:59:19,441 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:19,526 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:19,642 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:19,679 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:19,723 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:19,778 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:19,825 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:19,900 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:20,014 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:20,079 - DEBUG - reduced 12 to 2 maxima
+2020-11-25 10:59:20,148 - DEBUG - reduced 8 to 2 maxima
+2020-11-25 10:59:20,242 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:20,332 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:20,358 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:20,432 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:20,452 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:20,474 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:20,508 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:20,579 - DEBUG - reduced 14 to 2 maxima
+2020-11-25 10:59:20,633 - DEBUG - reduced 7 to 2 maxima
+2020-11-25 10:59:20,723 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:20,781 - DEBUG - reduced 19 to 2 maxima
+2020-11-25 10:59:20,922 - DEBUG - reduced 11 to 2 maxima
+2020-11-25 10:59:20,971 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:21,083 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:21,112 - DEBUG - reduced 6 to 2 maxima
+2020-11-25 10:59:21,172 - DEBUG - reduced 13 to 2 maxima
+2020-11-25 10:59:21,298 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 10:59:21,348 - DEBUG - reduced 5 to 2 maxima
+2020-11-25 10:59:21,401 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:21,501 - DEBUG - reduced 19 to 2 maxima
+2020-11-25 10:59:21,735 - INFO - particle detection took: 14.086610078811646 seconds
+2020-11-25 10:59:59,494 - DEBUG - grayscale conversion
+2020-11-25 10:59:59,495 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 10:59:59,497 - DEBUG - contrast curve
+2020-11-25 10:59:59,523 - DEBUG - blur
+2020-11-25 10:59:59,523 - DEBUG - lower threshold
+2020-11-25 10:59:59,531 - INFO - thresholded
+2020-11-25 10:59:59,567 - DEBUG - reduced 10 to 2 maxima
+2020-11-25 10:59:59,757 - INFO - particle detection took: 0.2622992992401123 seconds
+2020-11-25 11:00:00,546 - DEBUG - grayscale conversion
+2020-11-25 11:00:00,546 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 11:00:00,548 - DEBUG - contrast curve
+2020-11-25 11:00:00,573 - DEBUG - blur
+2020-11-25 11:00:00,574 - DEBUG - lower threshold
+2020-11-25 11:00:00,580 - INFO - thresholded
+2020-11-25 11:00:00,621 - DEBUG - reduced 16 to 2 maxima
+2020-11-25 11:00:00,736 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 11:00:00,766 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 11:00:00,784 - INFO - particle detection took: 0.2403576374053955 seconds
+2020-11-25 11:00:02,809 - DEBUG - grayscale conversion
+2020-11-25 11:00:02,810 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 11:00:02,812 - DEBUG - contrast curve
+2020-11-25 11:00:02,836 - DEBUG - blur
+2020-11-25 11:00:02,836 - DEBUG - lower threshold
+2020-11-25 11:00:02,842 - INFO - thresholded
+2020-11-25 11:00:03,037 - INFO - particle detection took: 0.22838902473449707 seconds
+2020-11-25 11:00:10,273 - DEBUG - grayscale conversion
+2020-11-25 11:00:10,273 - DEBUG - adaptive Histogram Adjustment
+2020-11-25 11:00:10,275 - DEBUG - contrast curve
+2020-11-25 11:00:10,300 - DEBUG - blur
+2020-11-25 11:00:10,300 - DEBUG - lower threshold
+2020-11-25 11:00:10,307 - INFO - thresholded
+2020-11-25 11:00:10,348 - DEBUG - reduced 16 to 2 maxima
+2020-11-25 11:00:10,464 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 11:00:10,494 - DEBUG - reduced 4 to 2 maxima
+2020-11-25 11:00:10,512 - INFO - particle detection took: 0.23935699462890625 seconds

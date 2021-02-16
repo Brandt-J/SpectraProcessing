@@ -22,8 +22,9 @@ If not, see <https://www.gnu.org/licenses/>.
 import unittest
 import numpy as np
 from typing import List
-from importData import get_database, load_test_spectra_from_csv
-from specCorrelation import correlate_spectra, mapSpectrasetsToSameWavenumbers
+from importData import get_database, load_specCSVs_from_subfolders
+from specCorrelation import correlate_spectra
+from functions import mapSpectrasetsToSameWavenumbers
 
 
 class TestSpecEvaluation(unittest.TestCase):
@@ -46,8 +47,9 @@ class TestSpecEvaluation(unittest.TestCase):
         self.assertTrue(np.array_equal(newSpecs1[:, 0], newSpecs2[:, 0]))
 
     def test_specCorr(self) -> None:
-        names, specs = load_test_spectra_from_csv(maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
+        names, specs = load_specCSVs_from_subfolders(maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
         db = get_database()
 
         # just to see that no errors occur..
-        results: List[str] = correlate_spectra(specs, db)
+        results: List[str] = correlate_spectra(specs, db, cutoff=0.0)
+
