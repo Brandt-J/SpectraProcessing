@@ -118,6 +118,7 @@ def correlate_spectra(spectra: np.ndarray, database: Database, corrMode: Correla
     :param preproc: Whether to apply preprocessing (i.e., baseline removal and normalization) to the spectra.
     :return:
     """
+    spectra = spectra.copy()
     refSpecs: np.ndarray = database.getSpectra()
     results: List[str] = []
     sampleSpecs, refSpecs = mapSpectrasetsToSameWavenumbers(spectra, refSpecs)
@@ -127,6 +128,7 @@ def correlate_spectra(spectra: np.ndarray, database: Database, corrMode: Correla
         if preproc:
             spec -= specProc.als_baseline(spec, smoothness_param=1e6)
             spec = specProc.normalizeIntensities(spec)
+            spec = specProc.smooth(spec[np.newaxis, :], windowSize=21)[0]
 
         corrcoeffs: np.ndarray = np.zeros(refSpecs.shape[1]-1)
         for j in range(refSpecs.shape[1]-1):

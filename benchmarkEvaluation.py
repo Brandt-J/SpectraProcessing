@@ -28,8 +28,8 @@ from specCorrelation import CorrelationMode
 from testSpectra import TestSpectra
 
 preprocessSpectra: bool = True  # Whether or not subtract baseline and normalize spectra for database search
-correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON]
-nMaxDBSpecs: int = 10  # maximum number of spectra in the database
+correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON, CorrelationMode.SFEC]
+nMaxDBSpecs: int = 50  # maximum number of spectra in the database
 nMaxDesc: int = 20  # maximum number of descriptors per spectrum
 
 testSpecObj = TestSpectra()
@@ -54,5 +54,5 @@ testAssignments = testSpecObj.getAllAssignments()
 print("testing with", testSpecObj.getNumberOfPlastics(), "plastic spectra, plastic content:", testSpecObj.getPlasticContent())
 
 figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, rdf, preprocessSpectra,
-                                          numIterations=10, dbCutoff=0.7, corrModes=correlationModes)
+                                          numIterations=10, dbCutoff=0.0, corrModes=correlationModes)
 figure.show()

@@ -3,6 +3,7 @@ from typing import List, Tuple, TYPE_CHECKING
 import time
 
 from specCorrelation import correlate_spectra, CorrelationMode
+from processing import normalizeIntensities, smooth
 from functions import compareResultLists
 from distort import *
 
@@ -42,18 +43,16 @@ def testEvaluationOnSpectra(spectra: np.ndarray, assignments: List[str], databas
     for i in range(numIterations):
         print(f'----------------ITERATION {i+1} ----------------')
         if i > 0:
-            spectra = add_noise(spectra, level=0.5, seed=seed)
-            spectra = add_distortions(spectra, level=0.5, seed=seed)
-            spectra = add_ghost_peaks(spectra, level=0.4, seed=seed)
+            spectra = add_noise(spectra, level=0.2, seed=seed)
+            spectra = add_distortions(spectra, level=0.7, seed=seed)
+            spectra = add_ghost_peaks(spectra, level=0.6, seed=seed)
             seed += 1
 
         if i % 2 == 0 and plotSpectra:
             fig = plt.figure()
             ax = fig.add_subplot()
             for offset, ind in enumerate(specPlotIndices):
-                specToPlot = spectra[:, ind+1]
-                specToPlot -= specToPlot.min()
-                specToPlot /= specToPlot.max()
+                specToPlot = normalizeIntensities(spectra[:, ind+1].copy())
                 ax.plot(spectra[:, 0], specToPlot + offset*0.2)
             ax.set_title(f'Random spectra of iteration {i+1}')
 
@@ -87,7 +86,7 @@ def testEvaluationOnSpectra(spectra: np.ndarray, assignments: List[str], databas
     ax2.set_ylabel('Recall (%)', fontsize=15)
     for ax in [ax1, ax2]:
         ax.set_xlabel('-- Decreasing spectra quality -->', fontsize=15)
-        ax.set_ylim(0, 100)
+        ax.set_ylim(0, 105)
         ax.legend(fontsize=10)
     resultFig.tight_layout()
     return resultFig, totalPrecisions

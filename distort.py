@@ -47,7 +47,7 @@ def append_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, s
             curLevel = np.clip((np.random.rand()*3 + 0.5) * level, 0.0, 1.0)
             iterationSeed += 1
             if curLevel > 0.0:
-                newSpecs = add_noise(newSpecs, level=curLevel, seed=iterationSeed)
+                newSpecs = add_noise(newSpecs, level=curLevel/3, seed=iterationSeed)  # too much noise is not realistic
                 if curRand > 0.2:
                     newSpecs = add_distortions(newSpecs, level=curLevel, seed=iterationSeed)
                 if curRand > 0.4:
