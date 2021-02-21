@@ -53,6 +53,22 @@ class Database(object):
                 remappedSpec: np.ndarray = self._remapSpectrumToWavenumbers(spectrum)
                 self.addSpectrum(name, remappedSpec)
 
+    def reduceSpecsToNWavenumbers(self, n: int) -> None:
+        """
+        Reduces the present spectra to only have n wavenumbers
+        :param n: desired number of wavenumbers
+        :return:
+        """
+        curWavenums: np.ndarray = self._spectra[:, 0]
+        newSpecs: np.ndarray = np.zeros((n, self._spectra.shape[1]))
+        newWavenums: np.ndarray = np.linspace(curWavenums.min(), curWavenums.max(), n)
+        newSpecs[:, 0] = newWavenums
+        for i in range(self.getNumberOfSpectra()):
+            curSpec: np.ndarray = self._spectra[:, [0, i+1]]
+            newSpecs[:, i+1] = self._remapSpectrumToWavenumbers(curSpec, newWavenums)[:, 1]
+
+        self._spectra = newSpecs
+
     def getSpectrumOfIndex(self, index: int) -> np.ndarray:
         assert self._spectra is not None
         return self._spectra[:, [0, index+1]]
@@ -80,20 +96,27 @@ class Database(object):
         assert self._spectra is not None
         return self._spectraNames.index(name)
 
-    def preprocessSpectra(self) -> None:
+    def preprocessSpectra(self, baseline: bool = True, normalize: bool = True) -> None:
         for i in range(self._spectra.shape[1] - 1):
-            self._spectra[:, i + 1] -= specProc.als_baseline(self._spectra[:, i + 1], smoothness_param=1e6)
-            self._spectra[:, i + 1] = specProc.normalizeIntensities(self._spectra[:, i + 1])
+            if baseline:
+                self._spectra[:, i + 1] -= specProc.als_baseline(self._spectra[:, i + 1], smoothness_param=1e6)
+            if normalize:
+                self._spectra[:, i + 1] = specProc.normalizeIntensities(self._spectra[:, i + 1])
 
     def removeSpectrumOfIndex(self, index: int) -> None:
         self._spectra = np.delete(self._spectra, index, axis=1)
         self._spectraNames.__delitem__(index)
 
-    def _remapSpectrumToWavenumbers(self, spectrum: np.ndarray) -> np.ndarray:
+    def _remapSpectrumToWavenumbers(self, spectrum: np.ndarray, wavenumbers: np.ndarray = None) -> np.ndarray:
         """
-        Takes a (N, 2) shape spectrum array and maps it to the currently present spectra.
+        Takes a spectrum array and maps it to the currently present spectra.
+        :param spectrum: (N, 2) shape spectrum with wavenumbs in first column
+        :param wavenumbers: The wavenumbers to map to. If None, the wavenumbers of the currently present spectra set
+        is used.
+        :return: shape (M, 2) shape spectrum with new wavenumber axis
         """
-        wavenumbers = self._spectra[:, ]
+        if wavenumbers is None:
+            wavenumbers = self._spectra[:, 0]
         newSpec = np.zeros((len(wavenumbers), 2))
         newSpec[:, 0] = wavenumbers
         for i in range(len(wavenumbers)):

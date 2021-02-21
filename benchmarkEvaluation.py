@@ -33,8 +33,8 @@ nMaxDBSpecs: int = 50  # maximum number of spectra in the database
 nMaxDesc: int = 20  # maximum number of descriptors per spectrum
 
 testSpecObj = TestSpectra()
-# testSpecObj.loadFromNPY()
-testSpecObj.generateFromRefSpecs(plasticContent=1.0, numVariations=100, maxPlastTypes=nMaxDBSpecs)
+testSpecObj.loadFromNPY()
+# testSpecObj.generateFromRefSpecs(plasticContent=1.0, numVariations=100, maxPlastTypes=nMaxDBSpecs)
 # testSpecObj.generateFromSampleDir()
 
 database = io.get_database(maxSpectra=nMaxDBSpecs, includeNonPlastic=False)
