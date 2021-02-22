@@ -24,3 +24,7 @@ TestData/testAssignments.txt
 TestData/testSpectra.npy
 
 TestData/testTypes.txt
+
+Reference Spectra Plastic/
+
+MachineLearning/Denoiser.model/

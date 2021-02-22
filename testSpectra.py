@@ -1,8 +1,11 @@
 from typing import *
 from enum import Enum
 from collections import Counter
+
 from importData import *
 from distort import append_n_distorted_copies
+from processing import normalizeIntensities
+from functions import remapSpecArrayToWavenumbers
 
 
 class TestSpectra(object):
@@ -15,6 +18,13 @@ class TestSpectra(object):
         self._spectra: np.ndarray = None
         self._assignments: List[str] = []
         self._types: List[MatType] = []
+
+    def normalizeSpectra(self) -> None:
+        for i in range(self.getNumberOfSpectra()):
+            self._spectra[:, i+1] = normalizeIntensities(self._spectra[:, i+1])
+
+    def mapSpectraToWavenumbers(self, newWavenumbers: np.ndarray) -> None:
+        self._spectra = remapSpecArrayToWavenumbers(self._spectra, newWavenumbers)
 
     def getPlasticContent(self) -> float:
         assert len(self._types) > 0, 'Requesting plastic content from empty type list'
