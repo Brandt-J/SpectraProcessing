@@ -1,16 +1,17 @@
 import tensorflow as tf
-from tensorflow.keras.layers import Conv2DTranspose, Conv2D, Input
+from tensorflow.keras.layers import Conv2DTranspose, Conv2D, Input, Dense
+from tensorflow.keras.models import Model
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from scipy.signal import gaussian, savgol_filter
+from scipy.signal import savgol_filter
 
 import importData as io
 
 
 os.chdir(os.path.dirname(os.getcwd()))
 
-numTrainSpectra, numVariationsTrain, numTest = 20, 1000, 10
+numTrainSpectra, numVariationsTrain, numTest = 100, 30000, 10
 specLength = 512
 db: 'io.Database' = io.get_database(maxSpectra=numTrainSpectra + numTest)
 db.preprocessSpectra()
@@ -20,41 +21,43 @@ spectra = db.getSpectra()[:, 1:]
 trainSpectra, testSpectra = spectra[:, :numTrainSpectra], spectra[:, numTrainSpectra:]
 trainSpectra = np.tile(trainSpectra, (1, numVariationsTrain))
 numTotalSpecs = trainSpectra.shape[1]
-kernelSize = (3, 3)
-print('Kernelsize:', kernelSize)
-numRows = 4
-
-x_train: np.ndarray = np.zeros((numTotalSpecs, numRows, specLength))
-for i in range(numTotalSpecs):
-    x_train[i, :, :] = np.tile(trainSpectra[:, i], (numRows, 1))
-
-x_test: np.ndarray = np.zeros((numTest, numRows, specLength))
-for i in range(numTest):
-    x_test[i, :, :] = np.tile(testSpectra[:, i], (numRows, 1))
-
-x_train = x_train[:, :, :, tf.newaxis]  # TODO: WHY???
-x_test = x_test[:, :, :, tf.newaxis]
-
-noise_factor = 0.2
-x_train_noisy = x_train - noise_factor/2 + noise_factor * tf.random.normal(shape=x_train.shape)
-x_test_noisy = x_test - noise_factor/2 + noise_factor * tf.random.normal(shape=x_test.shape)
-x_train_noisy = tf.clip_by_value(x_train_noisy, clip_value_min=0., clip_value_max=1.)
-x_test_noisy = tf.clip_by_value(x_test_noisy, clip_value_min=0., clip_value_max=1.)
 
 
-class NoiseReducer(tf.keras.Model):
+trainSpectra = trainSpectra.transpose()
+testSpectra = testSpectra.transpose()
+
+trainSpectra = tf.cast(trainSpectra, tf.float32)
+testSpectra = tf.cast(testSpectra, tf.float32)
+
+trainSpectra = tf.clip_by_value(trainSpectra, clip_value_min=0.0, clip_value_max=1.0)
+testSpectra = tf.clip_by_value(testSpectra, clip_value_min=0.0, clip_value_max=1.0)
+
+noiseLevel = 0.2
+noisyTrainSpectra = trainSpectra + noiseLevel * tf.random.normal(shape=trainSpectra.shape, seed=42)
+noisyTestSpectra = testSpectra + noiseLevel * tf.random.normal(shape=testSpectra.shape, seed=42)
+
+noisyTrainSpectra = tf.clip_by_value(noisyTrainSpectra, clip_value_min=0.0, clip_value_max=1.0)
+noisyTestSpectra = tf.clip_by_value(noisyTestSpectra, clip_value_min=0.0, clip_value_max=1.0)
+
+
+class Denoiser(Model):
     def __init__(self):
-        super(NoiseReducer, self).__init__()
-
+        super(Denoiser, self).__init__()
         self.encoder = tf.keras.Sequential([
-            Input(shape=(numRows, specLength, 1)),
-            Conv2D(16, (3, 3), activation='relu', padding='same', strides=2),
-            Conv2D(8, (3, 3), activation='relu', padding='same', strides=2)])
+            # Dense(256, activation="relu"),
+            Dense(128, activation="relu"),
+            Dense(64, activation="relu"),
+            # Dense(32, activation="relu"),
+            Dense(16, activation="relu"),
+            Dense(8, activation="relu")])
 
         self.decoder = tf.keras.Sequential([
-            Conv2DTranspose(8, kernel_size=3, strides=2, activation='relu', padding='same'),
-            Conv2DTranspose(16, kernel_size=3, strides=2, activation='relu', padding='same'),
-            Conv2D(1, kernel_size=(3, 3), activation='sigmoid', padding='same')])
+            Dense(16, activation="relu"),
+            # Dense(32, activation="relu"),
+            Dense(64, activation="relu"),
+            Dense(128, activation="relu"),
+            # Dense(256, activation="relu"),
+            Dense(specLength, activation="sigmoid")])
 
     def call(self, x):
         encoded = self.encoder(x)
@@ -62,23 +65,22 @@ class NoiseReducer(tf.keras.Model):
         return decoded
 
 
-autoencoder = NoiseReducer()
-autoencoder.compile(optimizer='adam', loss='mse')
-autoencoder.fit(x_train_noisy,
-                x_train,
-                epochs=2,
-                shuffle=True,
-                validation_data=(x_test_noisy, x_test))
+denoiser = Denoiser()
+denoiser.compile(optimizer='adam', loss='mae')
+history = denoiser.fit(noisyTrainSpectra, trainSpectra,
+          epochs=5,
+          validation_data=(noisyTestSpectra, testSpectra),
+          shuffle=True)
 
-encoded_imgs = autoencoder.encoder(x_test_noisy).numpy()
-decoded_imgs = autoencoder.decoder(encoded_imgs)
 
-n = 5
+reconstructedSpecs = denoiser.call(noisyTestSpectra)
+
+n = 3
 fig: plt.Figure = plt.figure(figsize=(20, 7))
 for i in range(n):
-    orig = np.array(tf.squeeze(x_test[i]))[0, :]
-    noisy = np.array(tf.squeeze(x_test_noisy[i]))[0, :]
-    reconst = np.array(tf.squeeze(decoded_imgs[i]))[0, :]
+    orig = testSpectra[i]
+    noisy = noisyTestSpectra[i]
+    reconst = reconstructedSpecs[i]
     savgol = savgol_filter(noisy, window_length=21, polyorder=5)
 
     corrNN = np.round(np.corrcoef(orig, reconst)[0, 1] * 100)
@@ -91,8 +93,8 @@ for i in range(n):
 
     bx = fig.add_subplot(2, n, i+n+1)
     bx.plot(orig, label='original')
-    bx.plot(reconst + 0.2, label=f'neuronal net\n{corrNN} % Correlation')
-    bx.plot(savgol + 0.4, label=f'savgol filter\n{corrSavGol} % Correlation')
+    bx.plot(reconst + 0.4, label=f'neuronal net\n{corrNN} % Correlation')
+    bx.plot(savgol + 0.8, label=f'savgol filter\n{corrSavGol} % Correlation')
     bx.legend()
 
 fig.tight_layout()
