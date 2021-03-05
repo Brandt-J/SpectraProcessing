@@ -132,3 +132,34 @@ def mapSpectrasetsToSameWavenumbers(set1: np.ndarray, set2: np.ndarray) -> Tuple
     assert returnTuple[0].shape[1] == set1.shape[1] and returnTuple[1].shape[1] == set2.shape[1]
     assert returnTuple[0].shape[0] == returnTuple[1].shape[0] == len(shorterWavenums)
     return returnTuple
+
+
+def remapSpecArrayToWavenumbers(spectra: np.ndarray, wavenumbers: np.ndarray) -> np.ndarray:
+    """
+    Takes a spectrum array and maps it to the currently present spectra.
+    :param spectra: (N, M) shape array of M-1 spectra with wavenumbs in first column
+    :param wavenumbers: The wavenumbers to map to. If None, the wavenumbers of the currently present spectra set
+    is used.
+    :return: shape (L, M) shape spectrum with new wavenumber axis
+    """
+    newSpecs: np.ndarray = np.zeros((len(wavenumbers), spectra.shape[1]))
+    newSpecs[:, 0] = wavenumbers
+    for i in range(spectra.shape[1]-1):
+        newSpecs[:, i+1] = remapSpectrumToWavenumbers(spectra[:, [0, i+1]], wavenumbers)[:, 1]
+    return newSpecs
+
+
+def remapSpectrumToWavenumbers(spectrum: np.ndarray, wavenumbers: np.ndarray = None) -> np.ndarray:
+    """
+    Takes a spectrum array and maps it to the currently present spectra.
+    :param spectrum: (N, 2) shape spectrum with wavenumbs in first column
+    :param wavenumbers: The wavenumbers to map to. If None, the wavenumbers of the currently present spectra set
+    is used.
+    :return: shape (M, 2) shape spectrum with new wavenumber axis
+    """
+    newSpec = np.zeros((len(wavenumbers), 2))
+    newSpec[:, 0] = wavenumbers
+    for i in range(len(wavenumbers)):
+        clostestIndex = np.argmin(np.abs(spectrum[:, 0] - wavenumbers[i]))
+        newSpec[i, 1] = spectrum[clostestIndex, 1]
+    return newSpec

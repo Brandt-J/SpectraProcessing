@@ -20,10 +20,11 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import numpy as np
-from functions import mapSpectrasetsToSameWavenumbers
 from scipy.stats import pearsonr
 from enum import Enum
 from typing import List
+
+from functions import mapSpectrasetsToSameWavenumbers, remapSpectrumToWavenumbers
 import processing as specProc
 from cythonModules import corrCoeff
 
@@ -44,13 +45,14 @@ class Database(object):
             self._spectra = spectrum
             self._spectraNames.append(name)
         else:
-            if np.array_equal(spectrum[:, 0], self._spectra[:, 0]):
+            curWavenums: np.ndarray = self._spectra[:, 0]
+            if np.array_equal(spectrum[:, 0], curWavenums):
                 addSpec: np.ndarray = spectrum[:, 1][:, np.newaxis]
                 self._spectra = np.hstack((self._spectra, addSpec))
                 self._spectraNames.append(name)
             else:
                 print(f'remapping spectrum {name} to fitting wavenumbers')
-                remappedSpec: np.ndarray = self._remapSpectrumToWavenumbers(spectrum)
+                remappedSpec: np.ndarray = remapSpectrumToWavenumbers(spectrum, curWavenums)
                 self.addSpectrum(name, remappedSpec)
 
     def reduceSpecsToNWavenumbers(self, n: int) -> None:
@@ -65,13 +67,16 @@ class Database(object):
         newSpecs[:, 0] = newWavenums
         for i in range(self.getNumberOfSpectra()):
             curSpec: np.ndarray = self._spectra[:, [0, i+1]]
-            newSpecs[:, i+1] = self._remapSpectrumToWavenumbers(curSpec, newWavenums)[:, 1]
+            newSpecs[:, i+1] = remapSpectrumToWavenumbers(curSpec, newWavenums)[:, 1]
 
         self._spectra = newSpecs
 
+    def getWavenumbers(self) -> np.ndarray:
+        return self._spectra[:, 0].copy()
+
     def getSpectrumOfIndex(self, index: int) -> np.ndarray:
         assert self._spectra is not None
-        return self._spectra[:, [0, index+1]]
+        return self._spectra[:, [0, index+1]].copy()
 
     def getSpectrumNameOfIndex(self, index: int) -> str:
         assert self._spectra is not None
@@ -83,6 +88,9 @@ class Database(object):
         index: int = self._spectraNames.index(name)
         return self.getSpectrumOfIndex(index)
 
+    def getSpectraNames(self) -> List[str]:
+        return self._spectraNames
+
     def getNumberOfSpectra(self) -> int:
         numSpec: int = 0
         if self._spectra is not None:
@@ -90,7 +98,7 @@ class Database(object):
         return numSpec
 
     def getSpectra(self) -> np.ndarray:
-        return self._spectra
+        return self._spectra.copy()
 
     def getIndexOfSpectrumName(self, name: str) -> int:
         assert self._spectra is not None
@@ -106,23 +114,6 @@ class Database(object):
     def removeSpectrumOfIndex(self, index: int) -> None:
         self._spectra = np.delete(self._spectra, index, axis=1)
         self._spectraNames.__delitem__(index)
-
-    def _remapSpectrumToWavenumbers(self, spectrum: np.ndarray, wavenumbers: np.ndarray = None) -> np.ndarray:
-        """
-        Takes a spectrum array and maps it to the currently present spectra.
-        :param spectrum: (N, 2) shape spectrum with wavenumbs in first column
-        :param wavenumbers: The wavenumbers to map to. If None, the wavenumbers of the currently present spectra set
-        is used.
-        :return: shape (M, 2) shape spectrum with new wavenumber axis
-        """
-        if wavenumbers is None:
-            wavenumbers = self._spectra[:, 0]
-        newSpec = np.zeros((len(wavenumbers), 2))
-        newSpec[:, 0] = wavenumbers
-        for i in range(len(wavenumbers)):
-            clostestIndex = np.argmin(np.abs(spectrum[:, 0] - wavenumbers[i]))
-            newSpec[i, 1] = spectrum[clostestIndex, 1]
-        return newSpec
 
 
 class CorrelationMode(Enum):
