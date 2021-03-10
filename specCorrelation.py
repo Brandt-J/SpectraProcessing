@@ -170,9 +170,12 @@ def getCorrelation(intensities1: np.ndarray, intensities2: np.ndarray, mode: Cor
     assert len(intensities1) == len(intensities2)
     corr: float = np.nan
     if mode == CorrelationMode.PEARSON:
-        corr = pearsonr(intensities1, intensities2)[0]
+        corr = pearsonr(intensities1, intensities2)[0]**2
     elif mode == CorrelationMode.SFEC:
-        corr = corrCoeff.sfec(intensities1, intensities2)
+        # vector normalizatoin:
+        intensities1 /= np.linalg.norm(intensities1)
+        intensities2 /= np.linalg.norm(intensities2)
+        corr = corrCoeff.sfec(intensities2, intensities1)
 
     assert corr != np.nan
     return corr

@@ -11,7 +11,7 @@ ctypedef np.float_t DTYPE_t
 
 @cython.boundscheck(False)           # assume: no index larger than N-1
 @cython.wraparound(False)            # assume: no neg. index
-def getCorrelationCoefficients(np.float_t[:] pattern, np.float_t[:, :] spectra):
+def getCorrelationCoefficients(np.float_t[:] pattern, np.float_t[:, :] spectra, useSFEC = False):
     """
     Pattern: Array with M intensities
     Spectra: (MxN) Spectra, N spectra at M wavenumbers, each
@@ -24,7 +24,10 @@ def getCorrelationCoefficients(np.float_t[:] pattern, np.float_t[:, :] spectra):
 
     if numPoints > 0:
         for i in range(numSpectra):
-            corrs[i] = getCorrelation(pattern, spectra[:, i], patternMean, numPoints)
+            if useSFEC:
+                corrs[i] = sfec(pattern, spectra[:, i])
+            else:
+                corrs[i] = getCorrelation(pattern, spectra[:, i], patternMean, numPoints)
 
     return corrs
 

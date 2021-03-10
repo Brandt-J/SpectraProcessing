@@ -20,7 +20,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 
 import os
-import time
 from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
@@ -96,12 +95,6 @@ def load_specCSVs_from_subfolders(parentDirectory: str, maxSpectraPerFolder: int
     return allNames, allSpectra
 
 
-def getTestSpectraFromDatabase(database: 'Database', numVariations: int = 1000) -> Tuple[np.ndarray, List[str]]:
-    origResults = database._spectraNames.copy() * numVariations
-    testSpectra = append_n_distorted_copies(database.getSpectra(), numVariations-1, level=0.3, seed=1337)
-    return testSpectra, origResults
-
-
 def load_specCSVs_from_directory(path: str, fixName: str = None, maxSpectra=1e6) -> Tuple[List[str], np.ndarray]:
     """
     Reads Spectra from CSV viles in path. If given, a fix name is assigned to each spectrum
@@ -151,6 +144,11 @@ def load_specCSVs_from_directory(path: str, fixName: str = None, maxSpectra=1e6)
                 numSpectra += 1
 
     return names, spectra
+
+
+def getNonPlasticNames() -> List[str]:
+    files = os.listdir(refNonPlasticDirectory)
+    return [name.split('.csv')[0] for name in files]
 
 
 def get_numbers_from_line(line: str) -> Tuple[float, float]:

@@ -28,13 +28,15 @@ from specCorrelation import CorrelationMode
 from testSpectra import TestSpectra
 
 preprocessSpectra: bool = True  # Whether or not subtract baseline and normalize spectra for database search
-correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON, CorrelationMode.SFEC]
-nMaxDBSpecs: int = 50  # maximum number of spectra in the database
+correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON]
+nMaxDBSpecs: int = 20  # maximum number of spectra in the database
 nMaxDesc: int = 20  # maximum number of descriptors per spectrum
+plasticContent: float = 0.1
+cutoffDB, cutoffRDF = 0.5, 0.2
 
 testSpecObj = TestSpectra()
-testSpecObj.loadFromNPY()
-# testSpecObj.generateFromRefSpecs(plasticContent=1.0, numVariations=100, maxPlastTypes=nMaxDBSpecs)
+# testSpecObj.loadFromNPY()
+testSpecObj.generateFromRefSpecs(plasticContent=plasticContent, numVariations=100, maxPlastTypes=nMaxDBSpecs)
 # testSpecObj.generateFromSampleDir()
 
 database = io.get_database(maxSpectra=nMaxDBSpecs, includeNonPlastic=False)
@@ -51,8 +53,9 @@ rdf.trainWithSpectra(trainSpectra, trainAssignments)
 
 testSpectra = testSpecObj.getAllSpectra()
 testAssignments = testSpecObj.getAllAssignments()
-print("testing with", testSpecObj.getNumberOfPlastics(), "plastic spectra, plastic content:", testSpecObj.getPlasticContent())
-
-figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, rdf, preprocessSpectra,
-                                          numIterations=10, dbCutoff=0.0, corrModes=correlationModes)
-figure.show()
+numPlast, numNonPlast = testSpecObj.getNumberOfPlastics(), testSpecObj.getNumberOfNonPlastics()
+print(f"testing with {numPlast} plastic and {numNonPlast} non-plastic spectra, plastic content: {testSpecObj.getPlasticContent()}")
+title = f'PlasticContent: {plasticContent}, cutoffDB: {cutoffDB}, cutoffRDF: {cutoffRDF}'
+figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, rdf, preprocessSpectra, plotSpectra=False,
+                                          numIterations=5, dbCutoff=cutoffDB, rdfCutoff=cutoffRDF,
+                                          corrModes=correlationModes, plotTitle=title)

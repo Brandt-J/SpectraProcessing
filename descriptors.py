@@ -183,10 +183,11 @@ class DescriptorLibrary(object):
     def getTotalNumberOfDescriptors(self) -> int:
         return int(np.sum([desc.getNumDescriptors() for desc in self._descriptorSets]))
 
-    def getCorrelationMatrixToSpectra(self, spectra: np.ndarray) -> np.ndarray:
+    def getCorrelationMatrixToSpectra(self, spectra: np.ndarray, useSFEC: bool = False) -> np.ndarray:
         """
         Produces a feature matrix used for training classifiers.
         :param spectra: (N, M) shape array of spectra, first column wavenumbers, all others: intensities
+        :param useSFEC: Whether to use Squared First-Difference Euclidean Cosine correlation or not (in that case, pearson correlation is used)
         :return: feature matrix rows: Features, columns: Samples
         """
         numSpectra: int = spectra.shape[1]-1
@@ -200,7 +201,12 @@ class DescriptorLibrary(object):
             specSection = spectra[desc.startInd:desc.endInd, 1:]
 
             if desc.endInd - desc.peakInd > 2 and desc.peakInd - desc.startInd > 2:
-                corrs = corrCoeff.getCorrelationCoefficients(desc.intensities, specSection)
+                if useSFEC:
+                    intens1 = desc.intensities / np.linalg.norm(desc.intensities)
+                    intens2 = specSection / np.linalg.norm(specSection)
+                    corrs = corrCoeff.getCorrelationCoefficients(intens1, intens2, useSFEC=True)
+                else:
+                    corrs = corrCoeff.getCorrelationCoefficients(desc.intensities, specSection, useSFEC=False)
                 featureMat[:, i] = corrs
 
         self._unsetDescriptorsFromWavenumbers()

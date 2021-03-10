@@ -22,6 +22,7 @@ If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 from scipy.signal import gaussian
 import matplotlib.pyplot as plt
+import noise
 
 
 def append_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, seed: int = 42,
@@ -38,8 +39,6 @@ def append_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, s
     numSpectra: int = spectra.shape[1] - 1
     finalSpectra: np.ndarray = np.zeros((spectra.shape[0], numSpectra * (n + 1) + 1))
     finalSpectra[:, :spectra.shape[1]] = spectra
-    maxIterations = 5
-    print(f'requesting {n} Variations, producing them with max {maxIterations} iterations')
     iterationSeed = seed
     if plot:
         np.random.seed(seed)
@@ -52,16 +51,13 @@ def append_n_distorted_copies(spectra: np.ndarray, n: int, level: float = 0.3, s
 
     for i in range(n):
         newSpecs: np.ndarray = spectra.copy()
-        iterationSeed += 1
         np.random.seed(iterationSeed)
-        curRand = np.random.rand()
-        for j in range(np.random.randint(maxIterations)):
-            curLevel = np.clip((np.random.rand()*3 + 0.5) * level, 0.0, 1.0)
-            iterationSeed += 1
-            newSpecs = add_noise(newSpecs, level=curLevel/3, seed=iterationSeed)  # too much noise is not realistic
-            newSpecs = add_distortions(newSpecs, level=curLevel*2, seed=iterationSeed)  # but distortions are good
-            if curRand > 0.4:
-                newSpecs = add_ghost_peaks(newSpecs, level=curLevel, seed=iterationSeed)
+
+        iterationSeed += 1
+        newSpecs = add_noise(newSpecs, level=0.1, seed=iterationSeed)
+        newSpecs = add_distortions(newSpecs, level=level, seed=iterationSeed)  # amplify distortions
+        if np.random.rand() > 0.4:
+            newSpecs = add_ghost_peaks(newSpecs, level=level, seed=iterationSeed)
 
         start, stop = (i+1) * numSpectra + 1, (i+2) * numSpectra + 1
         finalSpectra[:, start:stop] = newSpecs[:, 1:]
@@ -110,7 +106,7 @@ def add_distortions(spectra: np.ndarray, level: float = 0.1, seed: int = 42) -> 
         distortion /= distortion.max()
         # Have distortion only on the left-hand side of spectra (that's, where they usually occur)
         steep = np.random.rand() + 1.0
-        center = np.random.rand() * 0.2 + 0.2
+        center = np.random.rand() * 0.4 + 0.2
         distortion *= invsigmoid(spectra[:, 0], steepness=steep, center=center)
         intensities = (1 - randIntens) * intensities + randIntens * distortion
 
@@ -163,13 +159,15 @@ def add_noise(spectra: np.ndarray, level: float = 0.1, seed: int = 42) -> np.nda
     """
     np.random.seed(seed)
     spectra = spectra.copy()
-    freq = np.random.rand() * 0.01
-    offset = np.random.rand() * spectra[:, -1]
-    noisePower: np.ndarray = np.sin(freq * np.arange(spectra.shape[0]) + offset)/2 + 0.5  # sin function between 0 and 1
+    numWavenums: int = spectra.shape[0]
+    x: np.ndarray = np.linspace(0, 200, numWavenums*3)
+    randomNoise: np.ndarray = np.array([noise.pnoise1(i, octaves=3, repeat=len(x)) + 1 for i in x])
+    randomNoise -= randomNoise.min()
+    randomNoise /= randomNoise.max()
+
     for i in range(spectra.shape[1]-1):
-        seed += 1
-        np.random.seed(seed)
-        spectra[:, i+1] *= (1-level/2) + np.random.rand(spectra.shape[0]) * noisePower * level
+        startInd: int = np.random.randint(len(x)-numWavenums)
+        spectra[:, i+1] = (1-level)*spectra[:, i+1] + level*randomNoise[startInd:startInd+numWavenums]
     return spectra
 
 

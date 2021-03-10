@@ -19,15 +19,17 @@ If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Set
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.cluster import k_means
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
 
+import importData as io
 
-def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[float, float]:
+
+def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[float, float, float, float]:
     """
     Compares two assignment lists.
     :param trueList: List of true assignments
@@ -38,7 +40,7 @@ def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[f
     # Do some replacements to facilitate evaluation
     replaceDict: dict = {'ldpe': 'pe',
                          'hdpe': 'pe'}
-
+    plastError = getPlasticError(trueList, estimatedList)
     for i in range(len(trueList)):
         trueList[i] = trueList[i].lower()
         estimatedList[i] = estimatedList[i].lower()
@@ -67,7 +69,26 @@ def compareResultLists(trueList: List[str], estimatedList: List[str]) -> Tuple[f
 
     avgPrecision = np.mean(list(precisionDict.values())) * 100
     avgRecall = np.mean(list(recallDict.values())) * 100
-    return avgPrecision, avgRecall
+    if (avgRecall + avgPrecision) == 0:
+        avgF1 = 0
+    else:
+        avgF1 = 2*(avgPrecision*avgRecall) / (avgPrecision + avgRecall)
+    return avgPrecision, avgRecall, avgF1, plastError
+
+
+def getPlasticError(trueList: List[str], estimatedList: List[str]) -> float:
+    nonPlastNames: Set[str] = set(io.getNonPlasticNames() + ["unknown"])
+    from collections import Counter
+    # print("True unknowns:", Counter(trueList).get("unknown"), "Estimated unknowns:", Counter(estimatedList).get("unknown"))
+    plastCountTrue, plastCountEstimated = 0, 0
+    for true, estim in zip(trueList, estimatedList):
+        if true not in nonPlastNames:
+            plastCountTrue += 1
+        if estim not in nonPlastNames:
+            plastCountEstimated += 1
+    error: float = round((plastCountEstimated - plastCountTrue) / plastCountTrue * 100)
+    # print("TruePlastCount:", plastCountTrue, "Estimated PlastCount", plastCountEstimated, "PlastError:", error)
+    return error
 
 
 def getNMostDifferentSpectra(assignments: List[str], spectra: np.ndarray, n: int) -> Tuple[List[str], np.ndarray]:
