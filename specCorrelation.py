@@ -120,6 +120,13 @@ class CorrelationMode(Enum):
     PEARSON = 0
     SFEC = 1
 
+    def getName(self) -> str:
+        if self.value == 0:
+            name = "Database, Pearson"
+        else:
+            name = "Database, SFEC"
+        return name
+
 
 def correlate_spectra(spectra: np.ndarray, database: Database, corrMode: CorrelationMode = CorrelationMode.PEARSON,
                       cutoff: float = 0.75, preproc: bool = False) -> List[str]:

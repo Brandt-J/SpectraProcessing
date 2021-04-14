@@ -31,7 +31,7 @@ refPlasticDirectory: str = 'Reference Spectra Plastic'
 refNonPlasticDirectory: str = 'Reference Spectra Non Plastic'
 
 
-def get_database(maxSpectra: int = np.inf, includeNonPlastic: bool = False) -> Database:
+def get_database(maxSpectra: int = np.inf, includeNonPlastic: bool = False) -> 'Database':
     newDB: Database = Database('StandardPolymers')
     projectPath = os.getcwd()
     specNames, spectra = load_specCSVs_from_directory(os.path.join(projectPath, 'Reference Spectra Plastic'))
@@ -171,3 +171,9 @@ def get_numbers_from_line(line: str) -> Tuple[float, float]:
         print(e)
         raise
     return numbers
+
+
+if __name__ == '__main__':
+    names, specs = load_specCSVs_from_subfolders(r"C:\Users\xbrjos\Desktop\Python\SpectraProcesing\Sample Spectra Plastic")
+    np.savetxt(r"C:\Users\xbrjos\Desktop\Python\SpecReconstruction\MicroFTIRSpectra\assignments.txt", names, fmt='%s')
+    np.save(r"C:\Users\xbrjos\Desktop\Python\SpecReconstruction\MicroFTIRSpectra\polymers.npy", specs)

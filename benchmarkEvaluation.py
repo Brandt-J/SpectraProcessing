@@ -22,7 +22,7 @@ import numpy as np
 
 import importData as io
 from descriptors import DescriptorLibrary
-from classification import RandomDecisionForest
+from classification import RandomDecisionForest, NNClassifier
 from evaluationTest import testEvaluationOnSpectra
 from specCorrelation import CorrelationMode
 from testSpectra import TestSpectra
@@ -31,8 +31,8 @@ preprocessSpectra: bool = True  # Whether or not subtract baseline and normalize
 correlationModes: List[CorrelationMode] = [CorrelationMode.PEARSON]
 nMaxDBSpecs: int = 20  # maximum number of spectra in the database
 nMaxDesc: int = 20  # maximum number of descriptors per spectrum
-plasticContent: float = 0.1
-cutoffDB, cutoffRDF = 0.5, 0.2
+plasticContent: float = 1.0
+cutoffDB, cutoffRDF = 0.0, 0.0
 
 testSpecObj = TestSpectra()
 # testSpecObj.loadFromNPY()
@@ -42,20 +42,23 @@ testSpecObj.generateFromRefSpecs(plasticContent=plasticContent, numVariations=10
 database = io.get_database(maxSpectra=nMaxDBSpecs, includeNonPlastic=False)
 database.preprocessSpectra()
 
+trainSpectra: np.ndarray = testSpecObj.getPolymerSpectra()
+trainAssignments: List[str] = testSpecObj.getPolymerAssignments()
 descriptors: DescriptorLibrary = DescriptorLibrary()
 descriptors.generate_from_specDatabase(database, maxDescPerSet=200)
 descriptors.optimize_descriptorSets(maxDescriptorsPerSet=nMaxDesc)
-rdf: RandomDecisionForest = RandomDecisionForest(descriptors)
 
-trainSpectra: np.ndarray = testSpecObj.getPolymerSpectra()
-trainAssignments: List[str] = testSpecObj.getPolymerAssignments()
+rdf = RandomDecisionForest(descriptors)
 rdf.trainWithSpectra(trainSpectra, trainAssignments)
+
+nnClass = NNClassifier(descriptors)
+nnClass.trainWithSpectra(trainSpectra, trainAssignments)
 
 testSpectra = testSpecObj.getAllSpectra()
 testAssignments = testSpecObj.getAllAssignments()
 numPlast, numNonPlast = testSpecObj.getNumberOfPlastics(), testSpecObj.getNumberOfNonPlastics()
 print(f"testing with {numPlast} plastic and {numNonPlast} non-plastic spectra, plastic content: {testSpecObj.getPlasticContent()}")
 title = f'PlasticContent: {plasticContent}, cutoffDB: {cutoffDB}, cutoffRDF: {cutoffRDF}'
-figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, rdf, preprocessSpectra, plotSpectra=False,
-                                          numIterations=5, dbCutoff=cutoffDB, rdfCutoff=cutoffRDF,
+figure, results = testEvaluationOnSpectra(testSpectra, testAssignments, database, [rdf, nnClass], preprocessSpectra,
+                                          plotSpectra=False, numIterations=5, dbCutoff=cutoffDB, rdfCutoff=cutoffRDF,
                                           corrModes=correlationModes, plotTitle=title)

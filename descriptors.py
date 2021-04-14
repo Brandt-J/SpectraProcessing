@@ -180,6 +180,9 @@ class DescriptorLibrary(object):
         self._unsetDescriptorsFromWavenumbers()
         return results
 
+    def getNumberOfDescriptorSets(self) -> int:
+        return len(self._descriptorSets)
+
     def getTotalNumberOfDescriptors(self) -> int:
         return int(np.sum([desc.getNumDescriptors() for desc in self._descriptorSets]))
 
@@ -188,7 +191,7 @@ class DescriptorLibrary(object):
         Produces a feature matrix used for training classifiers.
         :param spectra: (N, M) shape array of spectra, first column wavenumbers, all others: intensities
         :param useSFEC: Whether to use Squared First-Difference Euclidean Cosine correlation or not (in that case, pearson correlation is used)
-        :return: feature matrix rows: Features, columns: Samples
+        :return: feature matrix rows: Samples, columns: Features
         """
         numSpectra: int = spectra.shape[1]-1
         numTotalDescriptors: int = self.getTotalNumberOfDescriptors()
