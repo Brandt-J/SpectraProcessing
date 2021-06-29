@@ -28,3 +28,5 @@ TestData/testTypes.txt
 MachineLearning/Denoiser.model/
 
 Reference Spectra Plastic/
+
+cythonModules/corrCoeff.cp37-win_amd64.pyd

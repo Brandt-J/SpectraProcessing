@@ -6,3 +6,4 @@ setuptools~=50.3.0
 cython~=0.29.21
 matplotlib~=3.3.1
 tensorflow~=2.3.0
+noise~=1.2.2

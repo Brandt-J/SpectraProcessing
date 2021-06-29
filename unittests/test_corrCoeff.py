@@ -38,7 +38,7 @@ class TestCorrCoeff(unittest.TestCase):
 
     def test_differentCorelationModes(self):
         np.random.seed(42)
-        testSet: np.ndarray = np.arange(10000, dtype=np.float)
+        testSet: np.ndarray = np.arange(10000, dtype=float)
         sameSet: np.ndarray = testSet.copy()
         zeroSet: np.ndarray = np.random.random(len(testSet))
         antiSet: np.ndarray = testSet.copy() * -1

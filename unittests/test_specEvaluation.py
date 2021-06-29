@@ -22,6 +22,8 @@ If not, see <https://www.gnu.org/licenses/>.
 import unittest
 import numpy as np
 from typing import List
+
+import os
 from importData import get_database, load_specCSVs_from_subfolders
 from specCorrelation import correlate_spectra
 from functions import mapSpectrasetsToSameWavenumbers
@@ -47,7 +49,9 @@ class TestSpecEvaluation(unittest.TestCase):
         self.assertTrue(np.array_equal(newSpecs1[:, 0], newSpecs2[:, 0]))
 
     def test_specCorr(self) -> None:
-        names, specs = load_specCSVs_from_subfolders(maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
+        projectFolder = os.path.dirname(os.getcwd())
+        specFolder = os.path.join(projectFolder, "Sample Spectra Plastic")
+        names, specs = load_specCSVs_from_subfolders(specFolder, maxSpectraPerFolder=5)  # we don't need aaaall the spectra...
         db = get_database()
 
         # just to see that no errors occur..

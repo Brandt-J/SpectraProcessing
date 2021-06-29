@@ -24,13 +24,13 @@ from scipy.stats import pearsonr
 from enum import Enum
 from typing import List
 
-from functions import mapSpectrasetsToSameWavenumbers, remapSpectrumToWavenumbers
-import processing as specProc
+import functions as fn
+from Preprocessing import processing as specProc
 from cythonModules import corrCoeff
 
 
 class Database(object):
-    def __init__(self, title):
+    def __init__(self, title='DefaultDB'):
         self.title: str = title
         self._spectraNames: List[str] = []
         self._spectra: np.ndarray = None
@@ -52,7 +52,7 @@ class Database(object):
                 self._spectraNames.append(name)
             else:
                 print(f'remapping spectrum {name} to fitting wavenumbers')
-                remappedSpec: np.ndarray = remapSpectrumToWavenumbers(spectrum, curWavenums)
+                remappedSpec: np.ndarray = fn.remapSpectrumToWavenumbers(spectrum, curWavenums)
                 self.addSpectrum(name, remappedSpec)
 
     def reduceSpecsToNWavenumbers(self, n: int) -> None:
@@ -67,7 +67,7 @@ class Database(object):
         newSpecs[:, 0] = newWavenums
         for i in range(self.getNumberOfSpectra()):
             curSpec: np.ndarray = self._spectra[:, [0, i+1]]
-            newSpecs[:, i+1] = remapSpectrumToWavenumbers(curSpec, newWavenums)[:, 1]
+            newSpecs[:, i+1] = fn.remapSpectrumToWavenumbers(curSpec, newWavenums)[:, 1]
 
         self._spectra = newSpecs
 
@@ -142,7 +142,7 @@ def correlate_spectra(spectra: np.ndarray, database: Database, corrMode: Correla
     spectra = spectra.copy()
     refSpecs: np.ndarray = database.getSpectra()
     results: List[str] = []
-    sampleSpecs, refSpecs = mapSpectrasetsToSameWavenumbers(spectra, refSpecs)
+    sampleSpecs, refSpecs = fn.mapSpectrasetsToSameWavenumbers(spectra, refSpecs)
 
     for i in range(sampleSpecs.shape[1]-1):
         spec: np.ndarray = sampleSpecs[:, i+1].copy()
@@ -177,7 +177,7 @@ def getCorrelation(intensities1: np.ndarray, intensities2: np.ndarray, mode: Cor
     assert len(intensities1) == len(intensities2)
     corr: float = np.nan
     if mode == CorrelationMode.PEARSON:
-        corr = pearsonr(intensities1, intensities2)[0]**2
+        corr = pearsonr(intensities1, intensities2)[0]
     elif mode == CorrelationMode.SFEC:
         # vector normalizatoin:
         intensities1 /= np.linalg.norm(intensities1)

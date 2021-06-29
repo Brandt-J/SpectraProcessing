@@ -23,7 +23,7 @@ import os
 from specCorrelation import Database
 import numpy as np
 from typing import List, Tuple
-from functions import getNMostDifferentSpectra, mapSpectrasetsToSameWavenumbers
+import functions as fn
 
 # Path to folders for regenerating data
 sampleDirectory: str = 'Sample Spectra Plastic'
@@ -34,16 +34,19 @@ refNonPlasticDirectory: str = 'Reference Spectra Non Plastic'
 def get_database(maxSpectra: int = np.inf, includeNonPlastic: bool = False) -> 'Database':
     newDB: Database = Database('StandardPolymers')
     projectPath = os.getcwd()
+    if projectPath.endswith("unittests"):
+        projectPath = os.path.dirname(projectPath)
+
     specNames, spectra = load_specCSVs_from_directory(os.path.join(projectPath, 'Reference Spectra Plastic'))
     if includeNonPlastic:
         nonPlastNames, nonPlastSpectra = load_specCSVs_from_directory(os.path.join(projectPath, 'Reference Spectra Non Plastic'))
-        spectra, nonPlastSpectra = mapSpectrasetsToSameWavenumbers(spectra, nonPlastSpectra)
+        spectra, nonPlastSpectra = fn.mapSpectrasetsToSameWavenumbers(spectra, nonPlastSpectra)
         assert spectra.shape[0] == nonPlastSpectra.shape[0]
         spectra = np.hstack((spectra, nonPlastSpectra[:, 1:]))
         specNames = specNames + nonPlastNames
 
     if len(specNames) > maxSpectra:
-        specNames, spectra = getNMostDifferentSpectra(specNames, spectra, maxSpectra)
+        specNames, spectra = fn.getNMostDifferentSpectra(specNames, spectra, maxSpectra)
 
     for index, name in enumerate(specNames):
         newDB.addSpectrum(name, spectra[:, [0, index + 1]])
@@ -162,14 +165,11 @@ def get_numbers_from_line(line: str) -> Tuple[float, float]:
     try:
         line = origline.split(';')
         assert len(line) == 2
-        numbers: Tuple[float, float] = float(line[0].replace(',', '.')), float(line[1].replace(',', '.'))
-    except AssertionError:
+        numbers = float(line[0].replace(',', '.')), float(line[1].replace(',', '.'))
+    except AssertionError as e:
         line = origline.split(',')
         assert len(line) == 2
-        numbers: Tuple[float, float] = float(line[0]), float(line[1])
-    except AssertionError as e:
-        print(e)
-        raise
+        numbers = float(line[0]), float(line[1])
     return numbers
 
 

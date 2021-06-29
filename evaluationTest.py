@@ -2,7 +2,7 @@ from typing import List, Dict, Tuple, TYPE_CHECKING
 import time
 
 from specCorrelation import correlate_spectra, CorrelationMode
-from processing import normalizeIntensities
+from Preprocessing.processing import normalizeIntensities
 from functions import compareResultLists
 from distort import *
 

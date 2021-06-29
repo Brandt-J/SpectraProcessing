@@ -22,7 +22,8 @@ import numpy as np
 
 import importData as io
 from descriptors import DescriptorLibrary
-from classification import RandomDecisionForest, NNClassifier
+from classification import RandomDecisionForest
+from MachineLearning.tensorflowClassifier import NNClassifier
 from evaluationTest import testEvaluationOnSpectra
 from specCorrelation import CorrelationMode
 from testSpectra import TestSpectra
@@ -49,6 +50,7 @@ descriptors.generate_from_specDatabase(database, maxDescPerSet=200)
 descriptors.optimize_descriptorSets(maxDescriptorsPerSet=nMaxDesc)
 
 rdf = RandomDecisionForest(descriptors)
+rdf.setWavenumbers(database.getWavenumbers())
 rdf.trainWithSpectra(trainSpectra, trainAssignments)
 
 nnClass = NNClassifier(descriptors)

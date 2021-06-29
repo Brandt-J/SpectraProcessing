@@ -4,8 +4,8 @@ from collections import Counter
 
 from importData import *
 from distort import append_n_distorted_copies
-from processing import normalizeIntensities
-from functions import remapSpecArrayToWavenumbers
+from Preprocessing.processing import normalizeIntensities
+from functions import remapSpecArrayToWavenumbers, getNMostDifferentSpectra
 
 
 class TestSpectra(object):

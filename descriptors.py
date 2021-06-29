@@ -18,12 +18,11 @@ along with this program, see COPYING.
 If not, see <https://www.gnu.org/licenses/>.
 """
 
-
 import numpy as np
 from typing import List, TYPE_CHECKING
 from scipy.signal import find_peaks, peak_prominences, savgol_filter
 import matplotlib.pyplot as plt
-import processing as specProc
+from Preprocessing import processing as specProc
 from cythonModules import corrCoeff
 if TYPE_CHECKING:
     from importData import Database
@@ -34,14 +33,14 @@ if TYPE_CHECKING:
 def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: int = 10,
                             minDiff: int = 5) -> 'DescriptorSet':
     intensities = spec[:, 1].copy()
-    filterSize = round(len(intensities)/100)
+    filterSize = max([10, round(len(intensities)/100)])
     if filterSize % 2 == 0:
         filterSize += 1
     intensities = savgol_filter(intensities, filterSize, 3)
 
     intensities -= intensities.min()
     intensities /= intensities.max()
-
+    print('getting descriptors for', specName)
     plot = False
     if plot:
         plt.clf()
@@ -87,12 +86,16 @@ def getDescriptorSetForSpec(specName: str, spec: np.ndarray, maxNumDescriptors: 
                     i += 1
 
     for start, peak, end in zip(lefts, peaks, rights):
-        if spec[peak, 1] > spec[start, 1] and spec[peak, 1] > spec[end, 1]:
-            desc.add_descriptor(spec[start, 0], spec[peak, 0], spec[end, 0])
-            peakshape = np.array([start, peak, end])
-            if plot:
-                plt.plot(peakshape, intensities[peakshape], alpha=0.8)
-                plt.title(specName)
+        try:
+            if spec[peak, 1] > spec[start, 1] and spec[peak, 1] > spec[end, 1]:
+                desc.add_descriptor(spec[start, 0], spec[peak, 0], spec[end, 0])
+                peakshape = np.array([start, peak, end])
+                if plot:
+                    plt.plot(peakshape, intensities[peakshape], alpha=0.8)
+                    plt.title(specName)
+        except IndexError:
+            breakpoint()
+
     if plot:
         plt.waitforbuttonpress()
 
@@ -154,6 +157,9 @@ class DescriptorLibrary(object):
 
             self._descriptorSets.append(desc)
 
+    def get_descriptorSets(self) -> List['DescriptorSet']:
+        return self._descriptorSets
+
     def add_descriptorSet(self, descSet: 'DescriptorSet') -> None:
         self._descriptorSets.append(descSet)
 
@@ -164,20 +170,24 @@ class DescriptorLibrary(object):
         :return: List of Spectra Assignments
         """
         self._setUpDescriptorsToWavenumbers(spectra[:, 0])
+        results: List[str] = self._get_descritor_results(spectra)
+        self._unsetDescriptorsFromWavenumbers()
+        return results
+
+    def _get_descritor_results(self, spectra) -> List[str]:
         results: List[str] = []
-        for i in range(spectra.shape[1]-1):
+        for i in range(spectra.shape[1] - 1):
             corrs: List[float] = []
             maxCorr: float = 0.0
             bestHit: str = 'None'
             for desc in self._descriptorSets:
-                corr = desc.get_mean_correlation_to_spectrum(spectra[:, [0, i+1]])
+                corr = desc.get_mean_correlation_to_spectrum(spectra[:, [0, i + 1]])
                 corrs.append(corr)
                 if corr > maxCorr:
                     bestHit = desc.name
                     maxCorr = corr
 
             results.append(bestHit)
-        self._unsetDescriptorsFromWavenumbers()
         return results
 
     def getNumberOfDescriptorSets(self) -> int:
@@ -335,36 +345,19 @@ class TriangleDescriptor(object):
         self.peakInd = np.argmin(np.abs(wavenumbers - self.peak))
         self.endInd = np.argmin(np.abs(wavenumbers - self.end))
 
-        if (self.endInd - self.startInd) % 2 == 0:
-            self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd, endpoint=False),
-                                                np.linspace(1, 0, self.endInd - self.peakInd))
-        else:
-            self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd),
-                                                np.linspace(1, 0, self.endInd - self.peakInd))
+        try:
+            if (self.endInd - self.startInd) % 2 == 0:
+                self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd, endpoint=False),
+                                                    np.linspace(1, 0, self.endInd - self.peakInd))
+            else:
+                self.intensities = np.append(np.linspace(0, 1, self.peakInd - self.startInd),
+                                                    np.linspace(1, 0, self.endInd - self.peakInd))
+        except ValueError as e:
+            print(e)
+            breakpoint()
 
     def unset_from_wavenumbers(self) -> None:
         self.startInd: int = np.nan
         self.peakInd: int = np.nan
         self.endInd: int = np.nan
         self.intensities: np.ndarray = None
-
-    # def get_correlation_to_spectrum(self, spectrum: np.ndarray) -> float:
-    #     """
-    #     Spectrum section according to descriptor limits is cut out, normalized and correlated to a triangle shape
-    #     determined by the descriptor limits.
-    #     :param spectrum: (N, 2) shape array, first col = wavenumbers
-    #     :return: correlationCoefficient
-    #     """
-    #     corr: float = 0
-    #     assert self._intensities is not None, f'Descriptor was not yet set to wavenumbers!'
-    #     if self._endInd - self._peakInd > 2 and self._peakInd - self._startInd > 2:
-    #         specSection: np.ndarray = spectrum[self._startInd:self._endInd, 1].copy()
-    #         # the following could seemingly be omitted, but have to test it...
-    #         specSection -= np.linspace(specSection[0], specSection[-1], self._endInd-self._startInd)  # subtract baseline
-    #
-    #         if not np.all(specSection == 0):
-    #             # scipy's version is faster than the one from numpy, result are the same
-    #             corr = pearsonr(self._intensities, specSection)[0]
-    #         assert not np.isnan(corr)
-    #
-    #     return corr

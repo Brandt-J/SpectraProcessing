@@ -18,13 +18,11 @@ along with this program, see COPYING.
 If not, see <https://www.gnu.org/licenses/>.
 """
 
-import numpy as np
 from scipy.signal import gaussian
-import matplotlib.pyplot as plt
 
 from distort import *
 from cythonModules.corrCoeff import sfec
-from processing import normalizeIntensities
+from Preprocessing.processing import normalizeIntensities
 
 
 peakLength: int = 101

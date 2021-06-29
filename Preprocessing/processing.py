@@ -74,15 +74,43 @@ def mapSpecToWavenumbers(spec: np.ndarray, targetWavenumbers: np.ndarray) -> np.
     return newSpec
 
 
-def normalizeIntensities(intensities: np.ndarray) -> np.ndarray:
-    intensities -= intensities.min()
-    intensities /= intensities.max()
-    return intensities
+def normalizeIntensities(input_data: np.ndarray) -> np.ndarray:
+    """
+    Normalizes each set of intensities
+    :param input_data: (NxM) array of N spectra with M features
+    :return:
+    """
+    if len(input_data.shape) == 1:
+        input_data = input_data[np.newaxis, :]
+
+    normalized: np.ndarray = np.zeros_like(input_data)
+    for i in range(input_data.shape[0]):
+        data: np.ndarray = input_data[i, :]
+        normalized[i, :] = (data - data.min()) / (data.max() - data.min())
+
+    return normalized
+
+
+def autoscale(input_data: np.ndarray) -> np.ndarray:
+    """
+    Autoscales all the variables, so they have the same importance for subsequent analysis
+    and same chance to be picked up.
+    Might not be reasonable for spectral data, here the relative intensities do have an importance: Close-to-zero
+    wavenumbers also indicate less relevant data than wavenumbers with high intensities.
+    :param input_data: (MxN) array of M samples with N features.
+    :return:
+    """
+    scaled = np.ndarray = np.zeros_like(input_data)
+    for i in range(input_data.shape[1]):
+        data = input_data[:, i]
+        scaled[:, i] = (data - np.mean(data)) / np.std(data)
+
+    return scaled
 
 
 def snv(input_data: np.ndarray) -> np.ndarray:
     """
-    Standard normal variate Correction.
+    Standard normal variate Correction. "Autoscale" of rows.
     :param input_data: Shape (NxM) array of N samples with M features
     :return: corrected data in same shape
     """
@@ -94,13 +122,14 @@ def snv(input_data: np.ndarray) -> np.ndarray:
 
 def mean_center(input_data: np.ndarray) -> np.ndarray:
     """
-    Mean Centering.
-    :param input_data: Shape (NxM) array of N samples with M features
+    Mean Centering, column (feature) wise. The mean of each feature along all the samples is substracted from
+    the respective features, thus converting each feature into the "difference in feature", essentially.
+    :param input_data: Shape (MxN) array of M samples with N features
     :return: corrected data in same shape
     """
     output_data: np.ndarray = np.zeros_like(input_data)
-    for i in range(input_data.shape[0]):
-        output_data[i, :] = input_data[i, :] - np.mean(input_data[i, :])
+    for i in range(input_data.shape[1]):
+        output_data[:, i] = input_data[:, i] - np.mean(input_data[:, i])
     return output_data
 
 
